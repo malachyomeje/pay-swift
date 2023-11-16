@@ -33,4 +33,4 @@ spring:
             enable: true
 
 server:
-  port: 2222
+  port: 1993
