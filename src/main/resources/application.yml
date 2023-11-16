@@ -1,0 +1,36 @@
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/paySwift
+    username: postgres
+    password: 1234567890
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  jwt:
+    secret: 556A586E3272357538782F413F4428472B4B6250645367566B59703373367639
+    jwtExpirationTime: 604800000
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: payswift7@gmail.com
+    password: xxxxxxxxxxxxxxxxxxx
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: 2222
