@@ -1,27 +1,25 @@
-package com.payswift.auth;
+package com.payswift.controller;
 
+import com.payswift.dtos.request.UsersDto;
 import com.payswift.dtos.response.BaseResponse;
+import com.payswift.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v0/auth")
-public class AuthenticationController {
+@RequestMapping("appUser")
+public class UsersController {
 
+    private final UsersService usersService;
 
+    @PostMapping("signUpUser")
+    public BaseResponse signUpUser(@RequestBody UsersDto usersDto){
+        return usersService.signUpUser(usersDto);
 
-    private final AuthenticationService service;
-
-    @PostMapping("/authenticate")
-    public BaseResponse register(@RequestBody AuthenticationRequest request)
-
-    {
-        return service.authenticate(request);
     }
 }
 

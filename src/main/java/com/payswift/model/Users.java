@@ -1,17 +1,20 @@
 package com.payswift.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.payswift.enums.Sex;
+import com.payswift.enums.UserRole;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 
 @Data
@@ -22,52 +25,56 @@ import java.util.Collection;
 public class Users  implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long Id;
+    private Long userId;
     private String firstName;
     private String lastName;
+    private String otherName;
     private String password;
     private String email;
     private String phoneNumber;
-    private String registrationNo;
-    private String age;
-    private String address;
-    private String state;
-    private String nameOfParent;
-    private String parentPhoneNo;
-    private String parentAddress;
+    private String confirmationToken;
+    private Boolean isEmailVerified= false;
+    private Boolean isLocked=false;
+    @Enumerated(value = EnumType.STRING)
+    private UserRole role;
+    @Enumerated(value = EnumType.STRING)
+    private Sex sex;
+    @CreationTimestamp
+    private Date date;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

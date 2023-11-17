@@ -1,7 +1,7 @@
 package com.payswift.auth;
 
 import com.payswift.config.JwtService;
-import com.payswift.dtos.BaseResponse;
+import com.payswift.dtos.response.BaseResponse;
 import com.payswift.model.Users;
 import com.payswift.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
