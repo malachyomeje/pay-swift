@@ -5,4 +5,6 @@ import com.payswift.dtos.response.BaseResponse;
 
 public interface UsersService {
     BaseResponse signUpUser (UsersDto usersDto);
+
+    BaseResponse confirmRegistration(String token);
 }
