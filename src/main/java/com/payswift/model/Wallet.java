@@ -23,12 +23,14 @@ public class Wallet {
     private BigDecimal amount;
     private String accountNumber;
     private String pin;
+    private String type;
+
     @UpdateTimestamp
     private Date dateUpdate;
     @CreationTimestamp
     private Date dateCreation;
-    @OneToOne
-    private  Users userWallet;
+   @OneToOne(mappedBy ="userWallet" )
+    private Users walletUser;
 
 
 }

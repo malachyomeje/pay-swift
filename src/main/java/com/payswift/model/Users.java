@@ -43,6 +43,8 @@ public class Users  implements UserDetails {
     private Sex sex;
     @CreationTimestamp
     private Date date;
+    @OneToOne
+    private  Wallet userWallet;
 
 
 
