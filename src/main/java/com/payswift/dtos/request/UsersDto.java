@@ -21,6 +21,8 @@ public class UsersDto {
     private String otherName;
     @NotBlank(message = "password must not be empty")
     private String password;
+    @NotBlank(message = "walletPin must not be empty")
+    private String walletPin;
     @Email(regexp = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$"
             ,message = "enter correct email")
     private String email;

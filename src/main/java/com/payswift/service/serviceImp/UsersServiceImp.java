@@ -96,10 +96,6 @@ public class UsersServiceImp implements UsersService {
 
             walletService.registerWallet(user);
 
-
-
-
-
             return  new BaseResponse("Account verification successful)");
 
         }

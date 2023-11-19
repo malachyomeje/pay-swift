@@ -18,8 +18,9 @@ public class WalletServiceImp implements WalletService {
 
         Wallet wallet = new Wallet();
        wallet.setAmount(BigDecimal.ZERO);
-       wallet.setPin(UsersUtils.walletPin());
-       wallet.setUserWallet(user);
+       wallet.setPin(user.getWalletPin());
+       wallet.setWalletUser(user);
+
 
 
     }
