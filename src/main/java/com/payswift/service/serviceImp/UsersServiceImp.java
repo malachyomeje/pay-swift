@@ -10,6 +10,7 @@ import com.payswift.model.Users;
 import com.payswift.repository.UsersRepository;
 import com.payswift.service.EmailService;
 import com.payswift.service.UsersService;
+import com.payswift.service.WalletService;
 import com.payswift.utils.UsersUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class UsersServiceImp implements UsersService {
     private final JwtService jwtService;
     private  final EmailService emailService;
     private final HttpServletRequest servletRequest;
+    private  final WalletService walletService;
 
 
     @Override
@@ -91,6 +93,12 @@ public class UsersServiceImp implements UsersService {
             user.setConfirmationToken(null);
             user.setIsEmailVerified(true);
             usersRepository.save(user);
+
+            walletService.registerWallet(user);
+
+
+
+
 
             return  new BaseResponse("Account verification successful)");
 

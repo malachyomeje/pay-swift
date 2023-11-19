@@ -33,6 +33,8 @@ public class Users  implements UserDetails {
     private String email;
     private String phoneNumber;
     private String confirmationToken;
+    private String walletPin;
+
     private Boolean isEmailVerified= false;
     private Boolean isLocked=false;
     @Enumerated(value = EnumType.STRING)
@@ -41,6 +43,7 @@ public class Users  implements UserDetails {
     private Sex sex;
     @CreationTimestamp
     private Date date;
+
 
 
     @Override
