@@ -8,20 +8,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/appUser")
+@RequestMapping("/api/v1/appUser")
 public class UsersController {
 
     private final UsersService usersService;
 
-    @PostMapping("signUpUser")
+    @PostMapping("/signAppUser")
     public BaseResponse signUpUser(@RequestBody UsersDto usersDto){
         return usersService.signUpUser(usersDto);
-
     }
 
-
-    @PostMapping("confirmRegistration/{token}")
-    public BaseResponse confirmRegistration(@PathVariable String token){
+    @GetMapping("/confirmRegistration")
+    public BaseResponse confirmRegistration(@RequestParam (name = "token") String token){
         return usersService.confirmRegistration(token);
 
 

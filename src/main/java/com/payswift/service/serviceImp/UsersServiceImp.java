@@ -7,6 +7,7 @@ import com.payswift.dtos.response.BaseResponse;
 import com.payswift.enums.Sex;
 import com.payswift.enums.UserRole;
 import com.payswift.model.Users;
+import com.payswift.paystack.PayStackService;
 import com.payswift.repository.UsersRepository;
 import com.payswift.service.EmailService;
 import com.payswift.service.UsersService;
@@ -14,6 +15,8 @@ import com.payswift.service.WalletService;
 import com.payswift.utils.UsersUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,8 @@ public class UsersServiceImp implements UsersService {
     private  final EmailService emailService;
     private final HttpServletRequest servletRequest;
     private  final WalletService walletService;
+    private  final PayStackService payStackService;
+    private final static Logger LOGGER = LoggerFactory.getLogger( UsersServiceImp.class);
 
 
     @Override
@@ -51,11 +56,15 @@ public class UsersServiceImp implements UsersService {
         Users appUsers = Users.builder()
                 .firstName(usersDto.getFirstName().toUpperCase())
                 .lastName(usersDto.getLastName().toUpperCase())
-                .otherName(usersDto.getOtherName().toUpperCase())
+                .middleName(usersDto.getMiddleName().toUpperCase())
                 .email(usersDto.getEmail())
                 .password(passwordEncoder.encode(usersDto.getPassword()))
                 .phoneNumber(usersDto.getPhoneNumber())
-                .sex(Sex.valueOf(usersDto.getSex()))
+                .walletPin(usersDto.getWalletPin())
+                .country(usersDto.getCountry())
+                .isEmailVerified(false)
+                .isLocked(false)
+                .sex(Sex.valueOf(usersDto.getSex().name().toUpperCase()))
                 .role(UserRole.USER)
                 .confirmationToken(token)
                 .build();
@@ -66,22 +75,23 @@ public class UsersServiceImp implements UsersService {
             http = http.substring(0,4);
         }
 
-        String URL = http + "://"+servletRequest.getServerName()+":"+servletRequest.getServerPort()+"api/v1/appUser/confirmRegistration/{token}" + token;
-
+        String URL = http + "://"+servletRequest.getServerName()+":"+servletRequest.getServerPort()+"/api/v1/appUser/confirmRegistration?token=" + token;
+        System.out.println(URL);
         String link = "<h3>Hello "  + appUsers.getFirstName()  +
                 "<br> Click the link below to activate your account <a href=" + URL + "><br>Activate</a></h3>";
 
-        String subject = "Pay-Pilot Verification Code";
+        System.out.println(link);
 
+        String subject = "Pay-Swift Verification Code";
 
         EmailDto emailSenderDto = new EmailDto();
         emailSenderDto.setTo(appUsers.getEmail());
         emailSenderDto.setSubject(subject);
         emailSenderDto.setContent(link);
         emailService.sendEmail(emailSenderDto);
-        return new BaseResponse<>("REGISTRATION SUCCESSFUL",usersDto.getFirstName());
+        return new BaseResponse<>("REGISTRATION SUCCESSFUL",
+                "You have successful registered. Check your email to verify your account");
     }
-
 
 @Override
     public BaseResponse confirmRegistration(String token) {
@@ -90,13 +100,17 @@ public class UsersServiceImp implements UsersService {
             return new BaseResponse("User not found");
         }
             Users user = existingUser.get();
-            user.setConfirmationToken(null);
-            user.setIsEmailVerified(true);
+    System.out.println(user);
+            user.setConfirmationToken(user.getConfirmationToken());
+            user.setEmailVerified(true);
+            user.setLocked(true);
             usersRepository.save(user);
 
             walletService.registerWallet(user);
+            LOGGER.info("creating virtual Account");
+            payStackService.createAccount(user);
 
-            return  new BaseResponse("Account verification successful)");
+            return  new BaseResponse("Account verification successful",user);
 
         }
     }

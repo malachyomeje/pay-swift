@@ -28,15 +28,16 @@ public class Users  implements UserDetails {
     private Long userId;
     private String firstName;
     private String lastName;
-    private String otherName;
+    private String middleName;
     private String password;
     private String email;
     private String phoneNumber;
     private String confirmationToken;
     private String walletPin;
-
-    private Boolean isEmailVerified= false;
-    private Boolean isLocked=false;
+    private String country;
+    private String accountNumber;
+    private boolean isEmailVerified= false;
+    private boolean isLocked=false;
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
     @Enumerated(value = EnumType.STRING)
@@ -70,7 +71,7 @@ public class Users  implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !isLocked;
     }
 
     @Override
@@ -80,6 +81,6 @@ public class Users  implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return !isEmailVerified;
     }
 }
