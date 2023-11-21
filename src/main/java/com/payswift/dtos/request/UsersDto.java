@@ -1,5 +1,6 @@
 package com.payswift.dtos.request;
 
+import com.payswift.enums.Sex;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ public class UsersDto {
     @NotBlank(message = "lastName must not be empty")
     private String lastName;
     @NotBlank(message = "lastName must not be empty")
-    private String otherName;
+    private String middleName;
     @NotBlank(message = "password must not be empty")
     private String password;
     @NotBlank(message = "walletPin must not be empty")
@@ -27,9 +28,13 @@ public class UsersDto {
             ,message = "enter correct email")
     private String email;
     @NotBlank(message = "enter correct phoneNumber")
+    private String accountNumber;
     private String phoneNumber;
     @NotBlank(message = "age must not be empty")
     private String age;
-    @NotBlank(message = "sex must not be empty")
-    private String sex;
+    @NotBlank(message = "country must not be empty")
+    private String country;
+  //  @NotBlank(message = "sex must not be empty")
+    private Sex sex;
+
   }
