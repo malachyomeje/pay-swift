@@ -8,6 +8,7 @@ import com.payswift.model.Users;
 import com.payswift.repository.BankRepository;
 import com.payswift.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import static com.payswift.utils.BankUtils.FLUTTER_WAVE_SECRET_KEY;
 import static com.payswift.utils.BankUtils.FLUTTER_WAVE_VIRTUAL_ACCOUNT;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class FlutterWaveImp implements FlutterWaveService {
 
@@ -26,6 +28,7 @@ public class FlutterWaveImp implements FlutterWaveService {
     private  final BankRepository bankRepository;
     @Override
     public FlutterWaveResponse createAccount(String email) {
+        log.info("ABOUT TO CALL FLUTTERWAVE");
 
 //        String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<Users> users = usersRepository.findByEmail(email);
@@ -36,7 +39,7 @@ public class FlutterWaveImp implements FlutterWaveService {
 
     FlutterWaveRequestDto flutterWaveRequestDto = new FlutterWaveRequestDto();
         flutterWaveRequestDto.setEmail(users1.getEmail());
-        flutterWaveRequestDto.setAmount(1);
+        flutterWaveRequestDto.setAmount(1D);
 
 
     HttpHeaders headers = new HttpHeaders();
@@ -45,19 +48,27 @@ public class FlutterWaveImp implements FlutterWaveService {
 
 
     HttpEntity<FlutterWaveRequestDto > entity = new HttpEntity<>(flutterWaveRequestDto , headers);
-
+    log.info("request to Flutterwave with payload{}",entity.getBody());
     RestTemplate restTemplate = new RestTemplate();
     ResponseEntity< FlutterWaveResponse > response = restTemplate.exchange
             (FLUTTER_WAVE_VIRTUAL_ACCOUNT, HttpMethod.POST, entity,   FlutterWaveResponse.class);
 
-    Bank userBank = new Bank();
+        log.info("Response from Flutterwave with payload{}",entity.getBody());
+
+
+        Bank userBank = new Bank();
       //  userBankMapping.setBankName(response.getBody().getData().getBankName());
         BeanUtils.copyProperties(response.getBody().getData(),userBank);
+     //   Bank bank = bankRepository.save(userBank);
         users1.setBank(userBank);
         users1.setAccountNumber(response.getBody().getData().getAccountNumber());
+       bankRepository.save(userBank);
+       usersRepository.save(users1);
 
+       // usersRepository.save(users1);
 
-        bankRepository.save(userBank);
+        log.info("created account on flutterwave and saved");
+
 
 
         System.out.println("Saved details");

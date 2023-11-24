@@ -106,9 +106,8 @@ public class UsersServiceImp implements UsersService {
             user.setEmailVerified(true);
             user.setLocked(true);
             usersRepository.save(user);
-
-            walletService.registerWallet(user);
             flutterWaveService.createAccount(user.getEmail());
+            walletService.registerWallet(user);
 
             return  new BaseResponse("Account verification successful",user);
 

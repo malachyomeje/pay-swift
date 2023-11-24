@@ -10,6 +10,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 
 @Data
 @NoArgsConstructor
@@ -29,7 +31,7 @@ public class Bank {
     private String note;
 
     @JsonProperty("amount")
-    private double amount;
+    private Double amount;
 
     @JsonProperty("response_code")
     private String responseCode;
