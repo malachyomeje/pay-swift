@@ -1,5 +1,6 @@
 package com.payswift.service.serviceImp;
 
+import com.payswift.bank.service.FlutterWaveService;
 import com.payswift.config.JwtService;
 import com.payswift.dtos.request.EmailDto;
 import com.payswift.dtos.request.UsersDto;
@@ -7,7 +8,6 @@ import com.payswift.dtos.response.BaseResponse;
 import com.payswift.enums.Sex;
 import com.payswift.enums.UserRole;
 import com.payswift.model.Users;
-import com.payswift.paystack.PayStackService;
 import com.payswift.repository.UsersRepository;
 import com.payswift.service.EmailService;
 import com.payswift.service.UsersService;
@@ -32,7 +32,7 @@ public class UsersServiceImp implements UsersService {
     private  final EmailService emailService;
     private final HttpServletRequest servletRequest;
     private  final WalletService walletService;
-    private  final PayStackService payStackService;
+    private  final FlutterWaveService flutterWaveService;
     private final static Logger LOGGER = LoggerFactory.getLogger( UsersServiceImp.class);
 
 
@@ -52,6 +52,7 @@ public class UsersServiceImp implements UsersService {
             return new BaseResponse<>("Wrong PhoneNumber, Enter Correct PhoneNumber", usersDto.getPhoneNumber());
         }
         String token = jwtService.generateSignUpConfirmationToken(usersDto.getEmail());
+
 
         Users appUsers = Users.builder()
                 .firstName(usersDto.getFirstName().toUpperCase())
@@ -100,17 +101,17 @@ public class UsersServiceImp implements UsersService {
             return new BaseResponse("User not found");
         }
             Users user = existingUser.get();
-    System.out.println(user);
+        LOGGER.info("{}",user);
             user.setConfirmationToken(user.getConfirmationToken());
             user.setEmailVerified(true);
             user.setLocked(true);
             usersRepository.save(user);
 
             walletService.registerWallet(user);
-            LOGGER.info("creating virtual Account");
-            payStackService.createAccount(user);
+            flutterWaveService.createAccount(user.getEmail());
 
             return  new BaseResponse("Account verification successful",user);
+
 
         }
     }

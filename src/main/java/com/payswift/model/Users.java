@@ -46,6 +46,8 @@ public class Users  implements UserDetails {
     private Date date;
     @OneToOne
     private  Wallet userWallet;
+    @OneToOne
+    private  Bank  bank;
 
 
 
