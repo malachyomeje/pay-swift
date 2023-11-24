@@ -30,7 +30,7 @@ public class SecurityConfiguration {
                 .requestMatchers(
                         "/api/v0/auth/authenticate",
                         "/api/v1/appUser/**",
-                       "/api/v1/payStack/**",
+                       "/api/v2/paystack/**",
                         "/v3/api-docs/**",
                         "/configuration/**",
                         "/swagger*/**"
