@@ -29,7 +29,7 @@ public class AuthenticationService {
                             request.getPassword()
                     )
             );
-        } catch (AuthenticationException e) {
+                 } catch (AuthenticationException e) {
             // Authentication failed, return "wrong password" response
             return new BaseResponse<>("Wrong password  or email");
         }

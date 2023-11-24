@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PayStackRequest {
+public class PayStackRequestDto {
 
     private String email;
-    private float amount;
+    private Double amount;
 
 }

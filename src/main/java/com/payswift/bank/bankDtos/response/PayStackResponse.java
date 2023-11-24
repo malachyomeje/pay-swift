@@ -10,8 +10,13 @@ import lombok.*;
 public class PayStackResponse {
 
     private boolean status;
+
     private String message;
     private Data data;
+    public Data getData() {
+        return data;
+    }
+
 
 
     @Getter
@@ -19,7 +24,6 @@ public class PayStackResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class  Data{
-
         @JsonProperty("authorization_url")
         private String authorizationUrl;
         @JsonProperty("access_code")

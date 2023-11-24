@@ -20,11 +20,9 @@ public class Wallet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private  Long walletId;
-    private BigDecimal amount;
+    private Double amount;
     private String accountNumber;
     private String pin;
-    private String type;
-
     @UpdateTimestamp
     private Date dateUpdate;
     @CreationTimestamp

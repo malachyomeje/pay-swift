@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FlutterWaveRequestDto {
     private String email;
-    private float amount;
+    private Double amount;
 }
