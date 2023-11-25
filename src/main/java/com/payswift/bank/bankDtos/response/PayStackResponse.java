@@ -4,18 +4,17 @@ package com.payswift.bank.bankDtos.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class PayStackResponse {
 
     private boolean status;
-
     private String message;
     private Data data;
-    public Data getData() {
-        return data;
-    }
+
+
 
 
 

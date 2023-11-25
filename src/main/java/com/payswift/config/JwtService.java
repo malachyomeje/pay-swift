@@ -60,8 +60,7 @@ public class JwtService {
     }
 
 
-
-    public String generateSignUpConfirmationToken(String email){
+    public String generateSignUpConfirmationToken(String email) {
         Date currentDate = new Date();
         Date expirationDate = new Date(currentDate.getTime() + 900000);
 
@@ -69,10 +68,9 @@ public class JwtService {
                 .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.HS256, JWT_SECRET)
+                .signWith(SignatureAlgorithm.HS256,JWT_SECRET)
                 .compact();
     }
-
 
 
 
