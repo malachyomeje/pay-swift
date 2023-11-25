@@ -7,7 +7,9 @@ import com.payswift.dtos.request.UsersDto;
 import com.payswift.dtos.response.BaseResponse;
 import com.payswift.enums.Sex;
 import com.payswift.enums.UserRole;
+
 import com.payswift.model.Users;
+
 import com.payswift.repository.UsersRepository;
 import com.payswift.service.EmailService;
 import com.payswift.service.UsersService;
@@ -51,7 +53,8 @@ public class UsersServiceImp implements UsersService {
         if (!UsersUtils.validPhoneNumber(usersDto.getPhoneNumber())) {
             return new BaseResponse<>("Wrong PhoneNumber, Enter Correct PhoneNumber", usersDto.getPhoneNumber());
         }
-        String token = jwtService.generateSignUpConfirmationToken(usersDto.getEmail());
+       String token = jwtService.generateSignUpConfirmationToken(usersDto.getEmail());
+
 
 
         Users appUsers = Users.builder()
@@ -67,9 +70,11 @@ public class UsersServiceImp implements UsersService {
                 .isLocked(false)
                 .sex(Sex.valueOf(usersDto.getSex().name().toUpperCase()))
                 .role(UserRole.USER)
-                .confirmationToken(token)
+               .confirmationToken(token)
                 .build();
-        usersRepository.save(appUsers);
+              usersRepository.save(appUsers);
+
+
 
         String http = servletRequest.getProtocol().substring(0,5).toLowerCase();
         if (!http.contains("s")) {
@@ -102,7 +107,8 @@ public class UsersServiceImp implements UsersService {
         }
             Users user = existingUser.get();
         LOGGER.info("{}",user);
-            user.setConfirmationToken(user.getConfirmationToken());
+
+           user.setConfirmationToken(user.getConfirmationToken());
             user.setEmailVerified(true);
             user.setLocked(true);
             usersRepository.save(user);

@@ -1,11 +1,11 @@
 package com.payswift.bank.service;
 
-import com.payswift.bank.bankDtos.response.PayStackResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface PayStackService {
-    ResponseEntity<String> payment(Double amount);
-    // ResponseEntity<String> payment(String transactionType);
+    ResponseEntity<String> payment(String transactionType, Double amount);
 
-   // PayStackResponse payment(Double amount);
+    // R String payment(String transactionType, Double amount);
+
+    ;
 }

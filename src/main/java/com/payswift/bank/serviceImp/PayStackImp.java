@@ -25,7 +25,7 @@ public class PayStackImp implements PayStackService {
 
     @Override
 
-    public ResponseEntity<String> payment(Double amount) {
+    public ResponseEntity<String> payment(String transactionType, Double amount) {
 
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<Users> users = usersRepository.findByEmail(email);
@@ -34,10 +34,10 @@ public class PayStackImp implements PayStackService {
         }
         Users users1 = users.get();
 
-
     PayStackRequestDto payStackRequestDto = new PayStackRequestDto();
         payStackRequestDto.setEmail(users1.getEmail());
-        payStackRequestDto.setAmount(users1.getUserWallet().getAmount()+amount);
+        payStackRequestDto.setAmount(users1.getUserWallet().getAmount()+(amount*100));
+       payStackRequestDto.setTransactionType(transactionType);
 
 
     HttpHeaders headers = new HttpHeaders();
@@ -47,15 +47,17 @@ public class PayStackImp implements PayStackService {
     HttpEntity<PayStackRequestDto> entity = new HttpEntity<>(payStackRequestDto, headers);
 
     RestTemplate restTemplate = new RestTemplate();
+        System.out.println("ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
 
     ResponseEntity<PayStackResponse> response = restTemplate.exchange
             (PAY_STACK_DEPOSIT, HttpMethod.POST, entity, PayStackResponse.class);
+        System.out.println("ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+
 
         if (response.getBody()== null)
-            return new ResponseEntity<>("Request failed", HttpStatus.BAD_REQUEST);
-        System.out.println("ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+           throw new RuntimeException("");
         System.out.println(response.getBody().getData().getAuthorizationUrl());
-        return new ResponseEntity<>(response.getBody().getData().getAuthorizationUrl(), HttpStatus.ACCEPTED);
+        return new  ResponseEntity(response.getBody().getData().getAuthorizationUrl(),HttpStatus.ACCEPTED);
 
 
     }

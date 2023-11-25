@@ -3,10 +3,7 @@ package com.payswift.model;
 import com.payswift.enums.Sex;
 import com.payswift.enums.UserRole;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,7 +14,8 @@ import java.util.Date;
 import java.util.List;
 
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -29,10 +27,11 @@ public class Users  implements UserDetails {
     private String firstName;
     private String lastName;
     private String middleName;
+    @Column(name = "password")
     private String password;
     private String email;
     private String phoneNumber;
-    private String confirmationToken;
+   private String confirmationToken;
     private String walletPin;
     private String country;
     private String accountNumber;
@@ -48,6 +47,7 @@ public class Users  implements UserDetails {
     private  Wallet userWallet;
     @OneToOne
     private  Bank  bank;
+
 
 
 
@@ -73,7 +73,7 @@ public class Users  implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !isLocked;
+        return isLocked;
     }
 
     @Override
@@ -83,6 +83,6 @@ public class Users  implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return !isEmailVerified;
+        return isEmailVerified;
     }
 }

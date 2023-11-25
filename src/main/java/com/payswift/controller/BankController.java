@@ -6,11 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 
-@Service
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v2/paystack")
 public class BankController {
@@ -20,9 +19,9 @@ public class BankController {
 
         @PostMapping("/account")
 
-        public ResponseEntity<String> payment( @RequestParam Double amount) {
-            LOGGER.info("entertainer VirtualAccountResponse");
-            return paymentService.payment(amount);
+        public ResponseEntity<String> payment(@RequestParam String transactionType, @RequestParam Double amount ) {
+            LOGGER.info("entertainer VirtualAccountResponseGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
+            return paymentService.payment(transactionType, amount);
         }
 
     }

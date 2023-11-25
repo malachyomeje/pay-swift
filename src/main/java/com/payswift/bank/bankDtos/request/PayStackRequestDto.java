@@ -1,15 +1,15 @@
 package com.payswift.bank.bankDtos.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class PayStackRequestDto {
 
     private String email;
     private Double amount;
+    private String  transactionType;
 
 }
