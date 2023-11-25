@@ -20,7 +20,7 @@ public class BankController {
         @PostMapping("/account")
 
         public ResponseEntity<String> payment(@RequestParam String transactionType, @RequestParam Double amount ) {
-            LOGGER.info("entertainer VirtualAccountResponseGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
+            LOGGER.info("entertainer BankController");
             return paymentService.payment(transactionType, amount);
         }
 
