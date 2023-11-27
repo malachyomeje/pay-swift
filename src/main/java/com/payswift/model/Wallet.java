@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class Wallet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private  Long walletId;
-    private Double amount;
+    private Double accountBalance;
     private String accountNumber;
     private String pin;
     @UpdateTimestamp

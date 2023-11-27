@@ -13,6 +13,7 @@ import com.payswift.repository.TransactionRepository;
 import com.payswift.repository.UsersRepository;
 import com.payswift.repository.WalletRepository;
 import com.payswift.utils.BankUtils;
+import com.payswift.utils.UsersUtils;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +58,7 @@ public class PayStackImp implements PayStackService {
 
         Optional<Wallet> findUserWallet = walletRepository.findById(users1.getUserWallet().getWalletId());
         if (findUserWallet.isEmpty()) {
-            throw new RuntimeException("UserWallet not found");
+            throw new WalletTransactionException("UserWallet not found");
         }
         Wallet userWallet = findUserWallet.get();
 
@@ -72,7 +73,8 @@ public class PayStackImp implements PayStackService {
             payStackRequestDto.setTransactionType(TransactionType.FUNDWALLET.getTransaction());
         }
 
-        //  paymentDto.setCallback_url(PayStackUtil.CALLBACK_URL+paymentDto.getReference()+"/"+paymentDto.getTransactionType());
+        payStackRequestDto.setCallback_url(BankUtils.CALLBACK_URL+payStackRequestDto.getTransactionReference()
+                +"/"+payStackRequestDto.getTransactionType());
 
 
         LOGGER.info("creating pay_stack_dto{} ", payStackRequestDto);
@@ -102,7 +104,8 @@ public class PayStackImp implements PayStackService {
 
             transactionRepository.save(walletTransaction);
             //  LOGGER.info("getting the url{} ",response.getBody().getData().getAuthorizationUrl());
-            return new ResponseEntity(response.getBody().getData().getAuthorizationUrl(), HttpStatus.ACCEPTED);
+           return new ResponseEntity(response.getBody().getData().getAuthorizationUrl(), HttpStatus.ACCEPTED);
+
         } catch (HttpClientErrorException e) {
             LOGGER.info(e.getMessage());
             return new ResponseEntity<>("Failed to initiate transaction", e.getStatusCode());
@@ -111,13 +114,22 @@ public class PayStackImp implements PayStackService {
     }
 
 
-    public ResponseEntity<String> verifyPayment(String reference, String transactionType) {
+    public String verifyPayment(String reference) {
+
+       // String userEmail = UsersUtils.getAuthenticatedUserEmail();
         String userEmail = getAuthenticatedUserEmail();
 
         Optional<Users> user = usersRepository.findByEmail(userEmail);
         if (user.isEmpty()) {
-            return new ResponseEntity<String>("user not found", HttpStatus.NOT_FOUND);
+            throw new UserNotFoundException("user not found");
         }
+        Users users = user.get();
+        Optional<Wallet> wallet = walletRepository.findById(users.getUserWallet().getWalletId());
+        if (wallet.isEmpty()){
+
+            throw new WalletTransactionException("wallet not found");
+        }
+            Wallet wallet1 = wallet.get();
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + PAY_STACK_SECRET_KEY);
@@ -134,17 +146,17 @@ public class PayStackImp implements PayStackService {
         if (transaction1.getTransactionStatus().equals(COMPLETED))
             throw new WalletTransactionException("Transaction Already Completed");
 
-        try {
             ResponseEntity<String> response = restTemplate.exchange(PAY_STACK_VERIFY_TRANSACTION + reference,
                     HttpMethod.GET, entity, String.class);
+
             if (response.getStatusCodeValue() == 200) {
-                if (transactionType.equalsIgnoreCase("makepayment")) {
-                    return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/")).build();
-
-
-                }
+                wallet1.setAccountBalance(transaction1.getAmount());
+                walletRepository.save(wallet1);
             }
+        transaction1.setTransactionStatus(COMPLETED);
+        transactionRepository.save(transaction1);
 
-        }
+        return "transaction failed";
+    }
     }
 
