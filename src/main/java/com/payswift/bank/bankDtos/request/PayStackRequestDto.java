@@ -8,8 +8,12 @@ import lombok.*;
 @AllArgsConstructor
 public class PayStackRequestDto {
 
-    private String email;
+
     private Double amount;
-    private String  transactionType;
+    private String email;
+    private String transactionReference;
+    private String transactionType;
+    private String callback_url;
+    private String authorization_url;
 
 }

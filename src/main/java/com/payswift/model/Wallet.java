@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,6 +28,10 @@ public class Wallet {
     private Date dateCreation;
    @OneToOne(mappedBy ="userWallet" )
     private Users walletUser;
+
+    @OneToMany (mappedBy = "wallet", cascade = CascadeType.ALL)
+    private List<Transaction> transactions;
+
 
 
 }
