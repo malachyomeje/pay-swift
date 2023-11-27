@@ -1,16 +1,14 @@
 package com.payswift.model;
 
 
-import com.payswift.enums.Status;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.payswift.enums.TransactionStatus;
+import com.payswift.enums.TransactionType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CurrentTimestamp;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
@@ -25,14 +23,21 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long transactionId;
-    private String code;
+    private String name;
+    private String transactionReference;
     private String recipient;
-    private String transactionPackage;
-    private Status status;
-    private String amount;
+    @Enumerated(EnumType.STRING)
+    private TransactionType transactionType;
+    @Enumerated(EnumType.STRING)
+    private TransactionStatus transactionStatus;
+    private Double amount;
     @UpdateTimestamp
-    private Date date;
-
+    private Date updateDate;
+    @CreationTimestamp
+    private Date creationDate;
+    @ManyToOne
+    @JoinColumn(name = "wallet_wallet_id")
+    private Wallet wallet;
 
 
 

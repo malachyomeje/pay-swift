@@ -1,6 +1,6 @@
 package com.payswift.enums;
 
-public enum Status {
+public enum TransactionStatus {
 
     COMPLETED,
     CANCELLED,

@@ -1,8 +1,17 @@
 package com.payswift.utils;
 
-import java.security.SecureRandom;
+import com.payswift.model.Users;
+import com.payswift.repository.UsersRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.security.SecureRandom;
+import java.util.Optional;
+
+@RequiredArgsConstructor
 public class UsersUtils {
+
 
 
     public static boolean validPassword(String password) {
@@ -21,4 +30,13 @@ public class UsersUtils {
 
         return "PAY-SWIFT" + String.format("%04d", UserWalletPin);
     }
-}
+
+
+    public static String getAuthenticatedUserEmail() {
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userDetails.getUsername();
+    }
+
+
+    }
