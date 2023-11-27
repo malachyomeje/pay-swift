@@ -4,6 +4,8 @@ import com.payswift.bank.bankDtos.request.PayStackRequestDto;
 import com.payswift.bank.bankDtos.response.PayStackResponse;
 import com.payswift.bank.service.PayStackService;
 import com.payswift.enums.TransactionType;
+import com.payswift.exceptions.UserNotFoundException;
+import com.payswift.exceptions.WalletTransactionException;
 import com.payswift.model.Transaction;
 import com.payswift.model.Users;
 import com.payswift.model.Wallet;
@@ -20,11 +22,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.Optional;
 
+import static com.payswift.enums.TransactionStatus.COMPLETED;
 import static com.payswift.enums.TransactionStatus.PENDING;
-import static com.payswift.utils.BankUtils.PAY_STACK_DEPOSIT;
-import static com.payswift.utils.BankUtils.PAY_STACK_SECRET_KEY;
+import static com.payswift.utils.BankUtils.*;
 import static com.payswift.utils.UsersUtils.getAuthenticatedUserEmail;
 
 @Service
@@ -35,8 +38,8 @@ public class PayStackImp implements PayStackService {
     private final WalletRepository walletRepository;
     private final TransactionRepository transactionRepository;
 
-   // private String PaymentReference;
-   // private Double fundingAmount;
+    // private String PaymentReference;
+    // private Double fundingAmount;
 
     private final static Logger LOGGER = LoggerFactory.getLogger(PayStackImp.class);
 
@@ -47,7 +50,7 @@ public class PayStackImp implements PayStackService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<Users> users = usersRepository.findByEmail(email);
         if (users.isEmpty()) {
-            throw new RuntimeException("user not found");
+            throw new UserNotFoundException("user not found");
         }
         Users users1 = users.get();
         LOGGER.info("getting the user from security context{} ", users1);
@@ -107,24 +110,41 @@ public class PayStackImp implements PayStackService {
 
     }
 
+
     public ResponseEntity<String> verifyPayment(String reference, String transactionType) {
         String userEmail = getAuthenticatedUserEmail();
 
         Optional<Users> user = usersRepository.findByEmail(userEmail);
-        if (user.isEmpty()){
-            return new ResponseEntity<String>("user not found",HttpStatus.NOT_FOUND);
+        if (user.isEmpty()) {
+            return new ResponseEntity<String>("user not found", HttpStatus.NOT_FOUND);
         }
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer "+ PAY_STACK_SECRET_KEY);
-        RestTemplate restTemplate = new RestTemplate();
+        headers.set("Authorization", "Bearer " + PAY_STACK_SECRET_KEY);
+
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
+        RestTemplate restTemplate = new RestTemplate();
+
+        Optional<Transaction> transaction = transactionRepository.findByTransactionReference(reference);
+        if (transaction.isEmpty()) {
+            throw new WalletTransactionException("Invalid Transaction Reference");
+        }
+        Transaction transaction1 = transaction.get();
+        if (transaction1.getTransactionStatus().equals(COMPLETED))
+            throw new WalletTransactionException("Transaction Already Completed");
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(PAY_STACK_VERIFY_TRANSACTION + reference,
+                    HttpMethod.GET, entity, String.class);
+            if (response.getStatusCodeValue() == 200) {
+                if (transactionType.equalsIgnoreCase("makepayment")) {
+                    return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/")).build();
 
 
+                }
+            }
 
-
+        }
     }
-
-}
 

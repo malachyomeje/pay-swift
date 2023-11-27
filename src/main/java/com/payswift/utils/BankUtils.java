@@ -18,6 +18,8 @@ public class BankUtils {
     public static String VM = "pk_live_f1849fd20261eded315df1997f0d44f257e47ef6";
 
 
+    public static final String PAY_STACK_VERIFY_TRANSACTION = "https://api.paystack.co/transaction/verify/";
+
     public static final String PAY_STACK_DEPOSIT = "https://api.paystack.co/transaction/initialize";
 
 
