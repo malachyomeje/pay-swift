@@ -1,8 +1,12 @@
 package com.payswift.service.serviceImp;
 
+import com.payswift.dtos.response.BaseResponse;
 import com.payswift.dtos.response.PagingAndSortingResponse;
+import com.payswift.exceptions.UserNotFoundException;
+import com.payswift.exceptions.WalletTransactionException;
 import com.payswift.model.Users;
 import com.payswift.model.Wallet;
+import com.payswift.repository.UsersRepository;
 import com.payswift.repository.WalletRepository;
 import com.payswift.service.WalletService;
 import lombok.RequiredArgsConstructor;
@@ -13,12 +17,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class WalletServiceImp implements WalletService {
     private final WalletRepository walletRepository;
+    private final UsersRepository usersRepository;
 
     @Override
     public void registerWallet(Users user) {
@@ -51,8 +57,23 @@ public class WalletServiceImp implements WalletService {
     public PagingAndSortingResponse<Page<Wallet>> walletPaginationAndSorting(int offset, int pageSize, String name) {
         Page<Wallet> walletPagingAndSorting = walletRepository.findAll(PageRequest.of(offset, pageSize).withSort(Sort.by(name)));
         return new PagingAndSortingResponse<>(walletPagingAndSorting.getSize(), walletPagingAndSorting);
-
-
     }
+
+    @Override
+    public BaseResponse findUserWallet(String email){
+        Optional<Users> users = usersRepository.findByEmail(email);
+        if (users.isEmpty()){
+            throw new UserNotFoundException("USER DOES NOT EXIST");
+        }
+        Users users1 = users.get();
+        Optional<Wallet> wallet = walletRepository.findById(users1.getUserWallet().getWalletId());
+        if (wallet.isEmpty()){
+            throw new WalletTransactionException("WALLET DOES NOT EXIST");
+        }
+        Wallet wallet1 = wallet.get();
+        return  new BaseResponse("WALLET FOUND",wallet1);
+    }
+
+
 
 }

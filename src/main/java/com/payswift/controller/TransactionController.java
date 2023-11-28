@@ -1,5 +1,6 @@
 package com.payswift.controller;
 
+import com.payswift.dtos.response.BaseResponse;
 import com.payswift.dtos.response.PagingAndSortingResponse;
 import com.payswift.model.Transaction;
 import com.payswift.model.Wallet;
@@ -31,5 +32,10 @@ public class TransactionController {
     @GetMapping("page/{offset}/{pageSize}/{name}")
     public PagingAndSortingResponse<Page<Transaction>> paginationAndSorting(@PathVariable int offset, @PathVariable int pageSize,@PathVariable String name) {
         return transactionService.transactionPaginationAndSorting(offset, pageSize, name);
+    }
+
+    @GetMapping("findUserTransaction")
+    public BaseResponse findUserTransaction() {
+        return transactionService.findUserTransaction();
     }
 }

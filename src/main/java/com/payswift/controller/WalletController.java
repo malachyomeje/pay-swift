@@ -1,5 +1,6 @@
 package com.payswift.controller;
 
+import com.payswift.dtos.response.BaseResponse;
 import com.payswift.dtos.response.PagingAndSortingResponse;
 import com.payswift.model.Users;
 import com.payswift.model.Wallet;
@@ -31,5 +32,9 @@ public class WalletController {
     @GetMapping("page/{offset}/{pageSize}/{name}")
     public PagingAndSortingResponse<Page<Wallet>> paginationAndSorting(@PathVariable int offset, @PathVariable int pageSize,@PathVariable String name) {
         return walletService.walletPaginationAndSorting(offset, pageSize, name);
+    }
+    @GetMapping("findUserWallet/{email}")
+    public BaseResponse findUserWallet(@PathVariable String email){
+        return  walletService.findUserWallet(email);
     }
 }
