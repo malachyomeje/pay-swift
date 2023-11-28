@@ -2,6 +2,7 @@ package com.payswift.bank.serviceImp;
 
 import com.payswift.bank.bankDtos.request.PayStackRequestDto;
 import com.payswift.bank.bankDtos.response.PayStackResponse;
+import com.payswift.bank.bankDtos.response.VerifyTransactionDto;
 import com.payswift.bank.service.PayStackService;
 import com.payswift.enums.TransactionType;
 import com.payswift.exceptions.UserNotFoundException;
@@ -13,7 +14,6 @@ import com.payswift.repository.TransactionRepository;
 import com.payswift.repository.UsersRepository;
 import com.payswift.repository.WalletRepository;
 import com.payswift.utils.BankUtils;
-import com.payswift.utils.UsersUtils;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
 import java.util.Optional;
 
 import static com.payswift.enums.TransactionStatus.COMPLETED;
@@ -69,12 +68,12 @@ public class PayStackImp implements PayStackService {
 
         if (transactionType.equalsIgnoreCase("makepament")) {
             payStackRequestDto.setTransactionType(TransactionType.MAKEPAYMENT.getTransaction());
-        } else {
-            payStackRequestDto.setTransactionType(TransactionType.FUNDWALLET.getTransaction());
+       // } else {
+          //  payStackRequestDto.setTransactionType(TransactionType.FUNDWALLET.getTransaction());
         }
 
-        payStackRequestDto.setCallback_url(BankUtils.CALLBACK_URL+payStackRequestDto.getTransactionReference()
-                +"/"+payStackRequestDto.getTransactionType());
+//        payStackRequestDto.setCallback_url(BankUtils.CALLBACK_URL+payStackRequestDto.getTransactionReference()
+//                +"/"+payStackRequestDto.getTransactionType());
 
 
         LOGGER.info("creating pay_stack_dto{} ", payStackRequestDto);
@@ -114,49 +113,91 @@ public class PayStackImp implements PayStackService {
     }
 
 
-    public String verifyPayment(String reference) {
+    @Override
+    public VerifyTransactionDto verifyPayment2(String reference) {
 
-       // String userEmail = UsersUtils.getAuthenticatedUserEmail();
         String userEmail = getAuthenticatedUserEmail();
 
         Optional<Users> user = usersRepository.findByEmail(userEmail);
         if (user.isEmpty()) {
             throw new UserNotFoundException("user not found");
         }
-        Users users = user.get();
-        Optional<Wallet> wallet = walletRepository.findById(users.getUserWallet().getWalletId());
-        if (wallet.isEmpty()){
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", "Bearer " + PAY_STACK_SECRET_KEY);
+            HttpEntity<String> entity = new HttpEntity<>( reference, headers);
+            RestTemplate restTemplate = new RestTemplate();
 
-            throw new WalletTransactionException("wallet not found");
+            Users users = user.get();
+
+            Optional<Wallet> wallet = walletRepository.findById(users.getUserWallet().getWalletId());
+        if(wallet.isEmpty()){
+            throw  new WalletTransactionException("wallet not found");
         }
-            Wallet wallet1 = wallet.get();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + PAY_STACK_SECRET_KEY);
-
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        RestTemplate restTemplate = new RestTemplate();
+            Wallet wallet1= wallet.get();
 
         Optional<Transaction> transaction = transactionRepository.findByTransactionReference(reference);
-        if (transaction.isEmpty()) {
-            throw new WalletTransactionException("Invalid Transaction Reference");
-        }
-        Transaction transaction1 = transaction.get();
-        if (transaction1.getTransactionStatus().equals(COMPLETED))
-            throw new WalletTransactionException("Transaction Already Completed");
-
-            ResponseEntity<String> response = restTemplate.exchange(PAY_STACK_VERIFY_TRANSACTION + reference,
-                    HttpMethod.GET, entity, String.class);
-
-            if (response.getStatusCodeValue() == 200) {
-                wallet1.setAccountBalance(transaction1.getAmount());
-                walletRepository.save(wallet1);
+        if(transaction.isEmpty()){
+            throw  new WalletTransactionException("Invalid Transaction Reference");
             }
+        Transaction transaction1 = transaction.get();
         transaction1.setTransactionStatus(COMPLETED);
+
         transactionRepository.save(transaction1);
 
-        return "transaction failed";
+        ResponseEntity<VerifyTransactionDto> response = restTemplate.exchange
+                (PAY_STACK_VERIFY_TRANSACTION, HttpMethod.GET, entity, VerifyTransactionDto.class);
+
+
+        return response.getBody();
     }
+
     }
+
+
+//    @Override
+//    public String verifyPayment(String reference) {
+//
+//       // String userEmail = UsersUtils.getAuthenticatedUserEmail();
+//        String userEmail = getAuthenticatedUserEmail();
+//
+//        Optional<Users> user = usersRepository.findByEmail(userEmail);
+//        if (user.isEmpty()) {
+//            throw new UserNotFoundException("user not found");
+//        }
+//        Users users = user.get();
+//        Optional<Wallet> wallet = walletRepository.findById(users.getUserWallet().getWalletId());
+//        if (wallet.isEmpty()){
+//
+//            throw new WalletTransactionException("wallet not found");
+//        }
+//            Wallet wallet1 = wallet.get();
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Authorization", "Bearer " + PAY_STACK_SECRET_KEY);
+//
+//        HttpEntity<String> entity = new HttpEntity<>(headers);
+//
+//        RestTemplate restTemplate = new RestTemplate();
+//
+//        Optional<Transaction> transaction = transactionRepository.findByTransactionReference(reference);
+//        if (transaction.isEmpty()) {
+//            throw new WalletTransactionException("Invalid Transaction Reference");
+//        }
+//        Transaction transaction1 = transaction.get();
+//        if (transaction1.getTransactionStatus().equals(COMPLETED))
+//            throw new WalletTransactionException("Transaction Already Completed");
+//
+//            ResponseEntity<String> response = restTemplate.exchange(PAY_STACK_VERIFY_TRANSACTION + reference,
+//                    HttpMethod.GET, entity, String.class);
+//
+//            if (response.getStatusCodeValue() == 200) {
+//                wallet1.setAccountBalance(transaction1.getAmount());
+//                walletRepository.save(wallet1);
+//            }
+//        transaction1.setTransactionStatus(COMPLETED);
+//        transactionRepository.save(transaction1);
+//
+//        return "transaction failed";
+//    }
+//    }
 

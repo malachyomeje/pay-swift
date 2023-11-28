@@ -23,6 +23,8 @@ public class BankUtils {
 
     public static final String PAY_STACK_VERIFY_TRANSACTION = "https://api.paystack.co/transaction/verify/";
 
+
+
     public static final String PAY_STACK_DEPOSIT = "https://api.paystack.co/transaction/initialize";
 
 
@@ -31,7 +33,7 @@ public class BankUtils {
                        SecureRandom secureRandom = new SecureRandom();
                 int payNumber = secureRandom.nextInt(10000); // Generate a random 6-digit number
 
-                return "PS" + String.format("%06d", payNumber);
+                return "PS" + String.format("%10d", payNumber);
         }
     }
 

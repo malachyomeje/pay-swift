@@ -5,6 +5,7 @@ import com.payswift.config.JwtService;
 import com.payswift.dtos.request.EmailDto;
 import com.payswift.dtos.request.UsersDto;
 import com.payswift.dtos.response.BaseResponse;
+import com.payswift.dtos.response.PagingAndSortingResponse;
 import com.payswift.enums.Sex;
 import com.payswift.enums.UserRole;
 
@@ -19,9 +20,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -117,8 +122,26 @@ public class UsersServiceImp implements UsersService {
 
             return  new BaseResponse("Account verification successful",user);
 
-
         }
+
+
+    @Override
+    public PagingAndSortingResponse<List<Users>> usersSorting(String name) {
+        List<Users> sortingUser = usersRepository.findAll(Sort.by(Sort.Direction.ASC, name));
+        return new PagingAndSortingResponse<>(sortingUser.size(), sortingUser);
+    }
+    @Override
+    public PagingAndSortingResponse<Page<Users>> usersPagination(int offset, int pageSize) {
+        Page<Users> paging =usersRepository.findAll(PageRequest.of(offset, pageSize));
+        return new PagingAndSortingResponse<>(paging.getSize(), paging);
+    }
+    @Override
+    public PagingAndSortingResponse<Page<Users>> usersPaginationAndSorting(int offset, int pageSize, String name) {
+        Page<Users> pagingAndSorting = usersRepository.findAll(PageRequest.of(offset, pageSize).withSort(Sort.by(name)));
+        return new PagingAndSortingResponse<>(pagingAndSorting.getSize(), pagingAndSorting);
+
+    }
+
     }
 
 
