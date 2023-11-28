@@ -23,5 +23,9 @@ public class BankController {
             LOGGER.info("entertainer BankController");
             return paymentService.payment(transactionType, amount);
         }
+//        @GetMapping("/verifyPayment/{reference}")
+//    public String verifyPayment(@PathVariable String reference) {
+//            return paymentService.verifyPayment(reference);
+//    }
 
     }
