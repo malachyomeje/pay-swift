@@ -3,12 +3,14 @@ package com.payswift.service.serviceImp;
 import com.payswift.bank.service.FlutterWaveService;
 import com.payswift.config.JwtService;
 import com.payswift.dtos.request.EmailDto;
+import com.payswift.dtos.request.UpDatedUserDto;
 import com.payswift.dtos.request.UsersDto;
 import com.payswift.dtos.response.BaseResponse;
 import com.payswift.dtos.response.PagingAndSortingResponse;
 import com.payswift.enums.Sex;
 import com.payswift.enums.UserRole;
 
+import com.payswift.exceptions.UserNotFoundException;
 import com.payswift.model.Users;
 
 import com.payswift.repository.UsersRepository;
@@ -26,6 +28,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,8 +62,6 @@ public class UsersServiceImp implements UsersService {
             return new BaseResponse<>("Wrong PhoneNumber, Enter Correct PhoneNumber", usersDto.getPhoneNumber());
         }
        String token = jwtService.generateSignUpConfirmationToken(usersDto.getEmail());
-
-
 
         Users appUsers = Users.builder()
                 .firstName(usersDto.getFirstName().toUpperCase())
@@ -121,10 +122,7 @@ public class UsersServiceImp implements UsersService {
             walletService.registerWallet(user);
 
             return  new BaseResponse("Account verification successful",user);
-
         }
-
-
     @Override
     public PagingAndSortingResponse<List<Users>> usersSorting(String name) {
         List<Users> sortingUser = usersRepository.findAll(Sort.by(Sort.Direction.ASC, name));
@@ -142,6 +140,85 @@ public class UsersServiceImp implements UsersService {
 
     }
 
+    @Override
+    public List<UsersDto>findAllUsers(){
+       List<Users>users = usersRepository.findAll();
+       List<UsersDto> usersDto = new ArrayList<>();
+       for (Users users1: users){
+
+           UsersDto usersDto1 = UsersDto.builder()
+                   .firstName(users1.getFirstName())
+                   .middleName(users1.getMiddleName())
+                   .lastName(users1.getLastName())
+                   .email(users1.getEmail())
+                   .sex(users1.getSex())
+                   .accountNumber(users1.getAccountNumber())
+                   .phoneNumber(users1.getPhoneNumber())
+                   .build();
+           usersDto.add(usersDto1);
+       }
+        return usersDto;
     }
+
+    @Override
+    public  BaseResponse findUserByEmail (String email){
+       Optional<Users> users = usersRepository.findByEmail(email);
+       if (users.isEmpty()){
+           throw new UserNotFoundException("USER DOES NOT EXIST");
+       }
+       Users users1= users.get();
+    return new BaseResponse("SUCCESSFUL",users1);
+   }
+
+@Override
+    public BaseResponse lockUserAccount(String email) {
+        Optional<Users> usersOptional = usersRepository.findByEmail(email);
+
+        if (usersOptional.isEmpty()) {
+            throw new UserNotFoundException("User does not exist");
+        }
+        Users user = usersOptional.get();
+        if (!user.isLocked()) {
+            // If the account is not locked, lock it
+            user.setLocked(true);
+            return new BaseResponse("Account locked successfully", user);
+        } else {
+            // If the account is locked, unlock it
+            user.setLocked(false);
+            return new BaseResponse("Account unlocked successfully", user);
+        }
+    }
+
+    @Override
+    public  BaseResponse deleteUserAccount(String email){
+        Optional<Users> users = usersRepository.findByEmail(email);
+        if (users.isEmpty()){
+            throw new UserNotFoundException("USER DOES NOT EXIST");
+        }
+        Users users1= users.get();
+        usersRepository.delete(users1);
+        return new BaseResponse("ACCOUNT DELETED SUCCESSFULLY",users1);
+    }
+    @Override
+    public  BaseResponse updateUser(UpDatedUserDto upDatedUserDto){
+
+        Optional<Users> users = usersRepository.findById(upDatedUserDto.getId());
+        if (users.isEmpty()){
+            throw new UserNotFoundException("USER DOES NOT EXIST");
+        }
+        Users users1= users.get();
+        users1.setFirstName(users1.getFirstName());
+        users1.setLastName(upDatedUserDto.getLastName());
+        users1.setEmail(upDatedUserDto.getEmail());
+        users1.setPhoneNumber(upDatedUserDto.getPhoneNumber());
+        users1.setCountry(upDatedUserDto.getCountry());
+        users1.setSex(upDatedUserDto.getSex());
+        users1.setMiddleName(upDatedUserDto.getMiddleName());
+        usersRepository.save(users1);
+
+        return new BaseResponse("USER UPDATED SUCCESSFULLY",users1);
+    }
+
+}
 
 

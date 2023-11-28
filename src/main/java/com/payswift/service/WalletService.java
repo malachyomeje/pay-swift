@@ -1,5 +1,6 @@
 package com.payswift.service;
 
+import com.payswift.dtos.response.BaseResponse;
 import com.payswift.dtos.response.PagingAndSortingResponse;
 import com.payswift.model.Users;
 import com.payswift.model.Wallet;
@@ -15,4 +16,6 @@ public interface WalletService {
     PagingAndSortingResponse<Page<Wallet>> walletPagination(int offset, int pageSize);
 
     PagingAndSortingResponse<Page<Wallet>> walletPaginationAndSorting(int offset, int pageSize, String name);
+
+    BaseResponse findUserWallet(String email);
 }

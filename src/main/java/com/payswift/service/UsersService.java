@@ -1,5 +1,6 @@
 package com.payswift.service;
 
+import com.payswift.dtos.request.UpDatedUserDto;
 import com.payswift.dtos.request.UsersDto;
 import com.payswift.dtos.response.BaseResponse;
 import com.payswift.dtos.response.PagingAndSortingResponse;
@@ -18,4 +19,14 @@ public interface UsersService {
     PagingAndSortingResponse<Page<Users>> usersPagination(int offset, int pageSize);
 
     PagingAndSortingResponse<Page<Users>> usersPaginationAndSorting(int offset, int pageSize, String name);
+
+    List<UsersDto>findAllUsers();
+
+    BaseResponse findUserByEmail(String email);
+
+    BaseResponse lockUserAccount(String email);
+
+    BaseResponse deleteUserAccount(String email);
+
+    BaseResponse updateUser(UpDatedUserDto upDatedUserDto);
 }

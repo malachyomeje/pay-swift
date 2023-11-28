@@ -1,13 +1,12 @@
 package com.payswift.controller;
 
-import com.payswift.bank.serviceImp.PayStackImp;
+import com.payswift.dtos.request.UpDatedUserDto;
 import com.payswift.dtos.request.UsersDto;
 import com.payswift.dtos.response.BaseResponse;
 import com.payswift.dtos.response.PagingAndSortingResponse;
 import com.payswift.model.Users;
 import com.payswift.service.UsersService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -32,7 +31,6 @@ public class UsersController {
     public BaseResponse confirmRegistration(@RequestParam (name = "token") String token){
         LOGGER.info("[+]  Inside UsersController.confirmRegistration with payload {} ",token);
         return usersService.confirmRegistration(token);
-
     }
     @GetMapping("sorting/{name}")
     public PagingAndSortingResponse<List<Users>> sorting (@PathVariable String name ) {
@@ -46,9 +44,26 @@ public class UsersController {
     public PagingAndSortingResponse<Page<Users>> paginationAndSorting(@PathVariable int offset, @PathVariable int pageSize,@PathVariable String name) {
         return usersService.usersPaginationAndSorting(offset, pageSize, name);
     }
-
-
-
+    @GetMapping("findAllUsers")
+    public List<UsersDto>findAllUsers(){
+        return usersService.findAllUsers();
+    }
+    @GetMapping("findUserByEmail/{email}")
+    public  BaseResponse findUserByEmail (@PathVariable String email){
+        return usersService.findUserByEmail(email);
+    }
+    @GetMapping("lockUserAccount/{email}")
+    public BaseResponse lockUserAccount(@PathVariable String email) {
+        return usersService.lockUserAccount(email);
+    }
+    @DeleteMapping("deleteUserAccount/{email}")
+    public  BaseResponse deleteUserAccount (@PathVariable String email){
+        return  usersService.deleteUserAccount(email);
+    }
+    @PutMapping("updateUse")
+    public  BaseResponse updateUser(@RequestBody UpDatedUserDto upDatedUserDto){
+        return usersService.updateUser(upDatedUserDto);
+    }
 }
 
 
