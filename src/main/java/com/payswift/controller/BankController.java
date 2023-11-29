@@ -1,6 +1,7 @@
 package com.payswift.controller;
 
 
+import com.payswift.bank.bankDtos.response.VerifyTransactionDto;
 import com.payswift.bank.service.PayStackService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -23,9 +24,11 @@ public class BankController {
             LOGGER.info("entertainer BankController");
             return paymentService.payment(transactionType, amount);
         }
-//        @GetMapping("/verifyPayment/{reference}")
-//    public String verifyPayment(@PathVariable String reference) {
-//            return paymentService.verifyPayment(reference);
-//    }
 
+
+        @GetMapping("/reference/{reference}")
+    public VerifyTransactionDto verifyPayment2(@PathVariable String reference) {
+            System.out.println("ENTER verifyPayment2 ");
+            return paymentService.verifyPayment2(reference);
+    }
     }

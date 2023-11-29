@@ -1,5 +1,6 @@
 package com.payswift.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,8 +27,9 @@ public class Wallet {
     @CreationTimestamp
     private Date dateCreation;
    @OneToOne(mappedBy ="userWallet" )
+   @JsonIgnore
     private Users walletUser;
-
+    @JsonIgnore
     @OneToMany (mappedBy = "wallet", cascade = CascadeType.ALL)
     private List<Transaction> transactions;
 

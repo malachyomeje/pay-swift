@@ -70,10 +70,11 @@ public class FlutterWaveImp implements FlutterWaveService {
      //   Bank bank = bankRepository.save(userBank);
         users1.setBank(userBank);
         users1.setAccountNumber(response.getBody().getData().getAccountNumber());
+       // userBank.setAmount(users1.getUserWallet().getAccountBalance());
        bankRepository.save(userBank);
+
        usersRepository.save(users1);
 
-       // usersRepository.save(users1);
 
         LOGGER.info("created account on flutter_wave and saved{}", userBank);
 

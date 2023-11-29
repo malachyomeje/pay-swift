@@ -4,6 +4,7 @@ import lombok.*;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class PayStackRequestDto {
@@ -11,7 +12,7 @@ public class PayStackRequestDto {
 
     private Double amount;
     private String email;
-    private String transactionReference;
+    private String reference;
     private String transactionType;
     private String callback_url;
     private String authorization_url;

@@ -34,10 +34,13 @@ public class WalletServiceImp implements WalletService {
         wallet.setAccountBalance(0D);
         wallet.setPin(user.getWalletPin());
         wallet.setPin(user.getWalletPin());
+       // wallet.setAccountBalance(user.getBank().getAmount());
         user.setUserWallet(wallet);
         wallet.setPin(user.getWalletPin());
         wallet.setAccountNumber(user.getBank().getAccountNumber());
         walletRepository.save(wallet);
+
+        user.getBank().setAmount(0D);
         log.info("Created Wallet");
     }
 

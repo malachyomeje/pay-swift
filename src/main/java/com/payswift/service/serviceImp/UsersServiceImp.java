@@ -120,6 +120,7 @@ public class UsersServiceImp implements UsersService {
             usersRepository.save(user);
             flutterWaveService.createAccount(user.getEmail());
             walletService.registerWallet(user);
+            usersRepository.save(user);
 
             return  new BaseResponse("Account verification successful",user);
         }
@@ -150,6 +151,9 @@ public class UsersServiceImp implements UsersService {
                    .firstName(users1.getFirstName())
                    .middleName(users1.getMiddleName())
                    .lastName(users1.getLastName())
+                   .password(users1.getPassword())
+                   .walletPin(users1.getWalletPin())
+                   .country(users1.getCountry())
                    .email(users1.getEmail())
                    .sex(users1.getSex())
                    .accountNumber(users1.getAccountNumber())
@@ -164,7 +168,8 @@ public class UsersServiceImp implements UsersService {
     public  BaseResponse findUserByEmail (String email){
        Optional<Users> users = usersRepository.findByEmail(email);
        if (users.isEmpty()){
-           throw new UserNotFoundException("USER DOES NOT EXIST");
+
+           throw new UserNotFoundException("User does not exist");
        }
        Users users1= users.get();
     return new BaseResponse("SUCCESSFUL",users1);
@@ -172,22 +177,19 @@ public class UsersServiceImp implements UsersService {
 
 @Override
     public BaseResponse lockUserAccount(String email) {
-        Optional<Users> usersOptional = usersRepository.findByEmail(email);
+    Optional<Users> usersOptional = usersRepository.findByEmail(email);
 
-        if (usersOptional.isEmpty()) {
-            throw new UserNotFoundException("User does not exist");
-        }
-        Users user = usersOptional.get();
-        if (!user.isLocked()) {
-            // If the account is not locked, lock it
-            user.setLocked(true);
-            return new BaseResponse("Account locked successfully", user);
-        } else {
-            // If the account is locked, unlock it
-            user.setLocked(false);
-            return new BaseResponse("Account unlocked successfully", user);
-        }
+    if (usersOptional.isEmpty()) {
+        throw new UserNotFoundException("User does not exist");
     }
+    Users user = usersOptional.get();
+    if (!user.isLocked()) {
+        // If the account is not locked, lock it
+        user.setLocked(false);
+
+    }
+        return new BaseResponse("Account locked successfully", user);
+}
 
     @Override
     public  BaseResponse deleteUserAccount(String email){
