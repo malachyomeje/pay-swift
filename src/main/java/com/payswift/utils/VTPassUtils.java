@@ -36,7 +36,6 @@ public class VTPassUtils {
             int randomIndex = secureRandom.nextInt(alphabets.length());
             randomStringBuilder.append(alphabets.charAt(randomIndex));
         }
-
         return randomStringBuilder.toString();
         //   Generate a random alphanumeric string (at least 12 characters)
 

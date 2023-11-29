@@ -44,7 +44,7 @@ public class UsersController {
     public PagingAndSortingResponse<Page<Users>> paginationAndSorting(@PathVariable int offset, @PathVariable int pageSize,@PathVariable String name) {
         return usersService.usersPaginationAndSorting(offset, pageSize, name);
     }
-    @GetMapping("findAllUsers")
+    @GetMapping("/findAllUsers")
     public List<UsersDto>findAllUsers(){
         return usersService.findAllUsers();
     }
@@ -60,7 +60,7 @@ public class UsersController {
     public  BaseResponse deleteUserAccount (@PathVariable String email){
         return  usersService.deleteUserAccount(email);
     }
-    @PutMapping("updateUse")
+    @PutMapping("/updateUse")
     public  BaseResponse updateUser(@RequestBody UpDatedUserDto upDatedUserDto){
         return usersService.updateUser(upDatedUserDto);
     }
