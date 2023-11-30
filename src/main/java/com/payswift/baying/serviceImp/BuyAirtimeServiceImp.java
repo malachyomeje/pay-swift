@@ -1,13 +1,17 @@
 package com.payswift.baying.serviceImp;
 
-import com.payswift.bank.serviceImp.FlutterWaveImp;
 import com.payswift.baying.request.BuyAirtimeDto;
+import com.payswift.baying.request.QueryTransactionResponseDto;
 import com.payswift.baying.response.BuyAirtimeResponse;
+import com.payswift.baying.response.QueryTransactionResponse;
 import com.payswift.baying.service.BuyAirtimeService;
+import com.payswift.enums.TransactionType;
 import com.payswift.exceptions.UserNotFoundException;
 import com.payswift.exceptions.WalletTransactionException;
+import com.payswift.model.Transaction;
 import com.payswift.model.Users;
 import com.payswift.model.Wallet;
+import com.payswift.repository.TransactionRepository;
 import com.payswift.repository.UsersRepository;
 import com.payswift.repository.WalletRepository;
 import com.payswift.utils.UsersUtils;
@@ -24,6 +28,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
+import static com.payswift.enums.TransactionStatus.PENDING;
 import static com.payswift.utils.VTPassUtils.*;
 
 
@@ -35,6 +40,7 @@ public class BuyAirtimeServiceImp implements BuyAirtimeService {
 
     private final UsersRepository usersRepository;
     private final WalletRepository walletRepository;
+    private final TransactionRepository transactionRepository;
     private final static Logger LOGGER = LoggerFactory.getLogger(BuyAirtimeServiceImp.class);
 
     @Override
@@ -46,20 +52,18 @@ public class BuyAirtimeServiceImp implements BuyAirtimeService {
         Optional<Users> user = usersRepository.findByEmail(userEmail);
         if (user.isEmpty()) {
             throw new UserNotFoundException("user not found");
+
         }
+        Users users1 = user.get();
 
-        Users user1 = user.get();
 
-
-        Optional<Wallet> findUsersWallet = walletRepository.findById(user1.getUserWallet().getWalletId());
-
-        if (findUsersWallet.isEmpty()) {
+        Optional<Wallet> findUserWallet = walletRepository.findById(users1.getUserWallet().getWalletId());
+        if (findUserWallet.isEmpty()) {
             throw new WalletTransactionException("UserWallet not found");
         }
-        Wallet userWallet = findUsersWallet.get();
+        Wallet userWallet = findUserWallet.get();
 
         BuyAirtimeDto buyAirtimeDto = new BuyAirtimeDto();
-     //   buyAirtimeDto.setRequest_id("2022013016104738492849");
         buyAirtimeDto.setServiceID(serviceID);
         buyAirtimeDto.setAmount(amount);
         buyAirtimeDto.setPhone(phone);
@@ -78,11 +82,63 @@ public class BuyAirtimeServiceImp implements BuyAirtimeService {
 
         RestTemplate restTemplate = new RestTemplate();
         log.info("Calling vtpass with entity: {}",entity);
-        log.info("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+
         ResponseEntity<BuyAirtimeResponse> response = restTemplate.exchange
                 (PAY_BILL, HttpMethod.POST, entity, BuyAirtimeResponse.class);
 
-       return response.getBody();
+        Transaction walletTransaction = Transaction.builder()
+                .name(users1.getFirstName() + " " + users1.getLastName())
+                .wallet(userWallet)
+                .transactionType(TransactionType.BUYAIRTIME)
+                .transactionStatus(PENDING)
+                .amount(buyAirtimeDto.getAmount())
+                .transactionReference(buyAirtimeDto.getRequest_id())
+                .build();
 
+        transactionRepository.save(walletTransaction);
+
+       return response.getBody();
     }
+
+    @Override
+   public QueryTransactionResponse confirmBuyAirtime(String request_id){
+
+        LOGGER.info("entered confirmBuyAirtime");
+
+        String userEmail = UsersUtils.getAuthenticatedUserEmail();
+        Optional<Users> user = usersRepository.findByEmail(userEmail);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("user not found");
+        }
+        Users user1 = user.get();
+    Optional<Wallet> findUsersWallet = walletRepository.findById(user1.getUserWallet().getWalletId());
+
+    if (findUsersWallet.isEmpty()) {
+        throw new WalletTransactionException("UserWallet not found");
+    }
+    Wallet userWallet = findUsersWallet.get();
+
+    QueryTransactionResponseDto queryTransactionResponse = new QueryTransactionResponseDto();
+    queryTransactionResponse.setRequest_id(request_id);
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("api-key", API_KEY);
+    headers.set("secret-key", SECRETE_KEY);
+    headers.setContentType(MediaType.APPLICATION_JSON);
+
+    HttpEntity< QueryTransactionResponseDto> entity = new HttpEntity<>(queryTransactionResponse, headers);
+
+      RestTemplate restTemplate = new RestTemplate();
+     LOGGER.info("Calling vtpass with entity: {}",entity);
+
+     ResponseEntity<QueryTransactionResponse> response = restTemplate.exchange
+            (QUERY_TRANSACTION_STATUS, HttpMethod.POST, entity,  QueryTransactionResponse.class);
+        log.info("entered response: {}",response);
+        return response.getBody();
+
+
+
+}
+
+
 }

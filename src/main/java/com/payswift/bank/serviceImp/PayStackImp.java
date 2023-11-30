@@ -75,9 +75,6 @@ public class PayStackImp implements PayStackService {
            payStackRequestDto.setTransactionType(TransactionType.FUNDWALLET.getTransaction());
         }
 
-        System.out.println("");
-
-
         LOGGER.info("creating pay_stack_dto{} ", payStackRequestDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -103,10 +100,8 @@ public class PayStackImp implements PayStackService {
                     .amount(payStackRequestDto.getAmount()+users1.getUserWallet().getAccountBalance())
                     .transactionReference(payStackRequestDto.getReference())
                     .build();
-
             transactionRepository.save(walletTransaction);
             LOGGER.info("saving transaction {} ", walletTransaction);
-            //  LOGGER.info("getting the url{} ",response.getBody().getData().getAuthorizationUrl());
            return new ResponseEntity(response.getBody().getData().getAuthorizationUrl(), HttpStatus.ACCEPTED);
 
 
@@ -132,6 +127,7 @@ public class PayStackImp implements PayStackService {
 
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", "Bearer " + PAY_STACK_SECRET_KEY);
+
             HttpEntity<String> entity = new HttpEntity<>( headers);
             RestTemplate restTemplate = new RestTemplate();
 

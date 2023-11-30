@@ -2,6 +2,7 @@ package com.payswift.controller;
 
 
 import com.payswift.baying.response.BuyAirtimeResponse;
+import com.payswift.baying.response.QueryTransactionResponse;
 import com.payswift.baying.service.BuyAirtimeService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -20,6 +21,10 @@ public class BuyingController {
         LOGGER.info("entered BuyingController");
         return buyAirtimeService.buyAirtime(phone,amount,serviceID);
 
+    }
+    @PostMapping("/confirmBuyAirtime")
+    public QueryTransactionResponse confirmBuyAirtime(@RequestParam String request_id){
+        return buyAirtimeService.confirmBuyAirtime(request_id);
     }
 }
 

@@ -16,6 +16,7 @@ public class BuyAirtimeResponse {
     private String response_description;
     private String requestId;
     private String transactionId;
+    private Transaction_Date transaction_date;
     private Double amount;
     private String purchased_code;
 
@@ -25,11 +26,10 @@ public class BuyAirtimeResponse {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Transaction_Date{
-        private Date date;
+        private String date;
         private String timezone_type;
         private String timezone;
     }
 
-   // private String purchased_code;
 
 }
