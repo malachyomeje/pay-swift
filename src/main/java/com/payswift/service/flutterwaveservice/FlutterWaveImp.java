@@ -1,15 +1,12 @@
-package com.payswift.bank.serviceImp;
+package com.payswift.service.flutterwaveservice;
 
-import com.payswift.bank.bankDtos.request.FlutterWaveRequestDto;
-import com.payswift.bank.bankDtos.response.FlutterWaveResponse;
-import com.payswift.bank.service.FlutterWaveService;
+import com.payswift.dtos.externalapiDtos.request.FlutterWaveRequestDto;
+import com.payswift.dtos.externalapiDtos.response.FlutterWaveResponse;
 import com.payswift.model.Bank;
 import com.payswift.model.Users;
 import com.payswift.repository.BankRepository;
 import com.payswift.repository.UsersRepository;
-import com.payswift.service.EmailService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -19,8 +16,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
-import static com.payswift.utils.BankUtils.FLUTTER_WAVE_SECRET_KEY;
-import static com.payswift.utils.BankUtils.FLUTTER_WAVE_VIRTUAL_ACCOUNT;
+import static com.payswift.utils.AppUtils.FLUTTER_WAVE_SECRET_KEY;
+import static com.payswift.utils.AppUtils.FLUTTER_WAVE_VIRTUAL_ACCOUNT;
 
 @Service
 

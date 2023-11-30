@@ -1,9 +1,8 @@
-package com.payswift.bank.serviceImp;
+package com.payswift.service.paystackservice;
 
-import com.payswift.bank.bankDtos.request.PayStackRequestDto;
-import com.payswift.bank.bankDtos.response.PayStackResponse;
-import com.payswift.bank.bankDtos.response.VerifyTransactionDto;
-import com.payswift.bank.service.PayStackService;
+import com.payswift.dtos.externalapiDtos.request.PayStackRequestDto;
+import com.payswift.dtos.externalapiDtos.response.PayStackResponse;
+import com.payswift.dtos.externalapiDtos.response.VerifyTransactionDto;
 import com.payswift.enums.TransactionType;
 import com.payswift.exceptions.UserNotFoundException;
 import com.payswift.exceptions.WalletTransactionException;
@@ -14,7 +13,7 @@ import com.payswift.model.Wallet;
 import com.payswift.repository.TransactionRepository;
 import com.payswift.repository.UsersRepository;
 import com.payswift.repository.WalletRepository;
-import com.payswift.utils.BankUtils;
+import com.payswift.utils.AppUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -29,7 +28,7 @@ import java.util.Optional;
 
 import static com.payswift.enums.TransactionStatus.COMPLETED;
 import static com.payswift.enums.TransactionStatus.PENDING;
-import static com.payswift.utils.BankUtils.*;
+import static com.payswift.utils.AppUtils.*;
 import static com.payswift.utils.UsersUtils.getAuthenticatedUserEmail;
 
 @Service
@@ -45,7 +44,7 @@ public class PayStackImp implements PayStackService {
     private final static Logger LOGGER = LoggerFactory.getLogger(PayStackImp.class);
 
     @Override
-    public ResponseEntity<String> payment(String transactionType, Double amount) {
+    public ResponseEntity<String> initializeTransaction(String transactionType, Double amount) {
 
         LOGGER.info("ABOUT TO ENTER PAY_STACK");
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -65,7 +64,7 @@ public class PayStackImp implements PayStackService {
         PayStackRequestDto payStackRequestDto = new PayStackRequestDto();
         payStackRequestDto.setEmail(users1.getEmail());
         payStackRequestDto.setAmount(amount * 100);
-        payStackRequestDto.setReference(BankUtils.generateTransactionReference());
+        payStackRequestDto.setReference(AppUtils.generateTransactionReference());
         payStackRequestDto.setTransactionType(transactionType);
         payStackRequestDto.setCallback_url("www.google.com");
 
@@ -114,7 +113,7 @@ public class PayStackImp implements PayStackService {
 
 
     @Override
-    public VerifyTransactionDto verifyPayment2(String reference) {
+    public VerifyTransactionDto completeTransaction(String reference) {
 
         String userEmail = getAuthenticatedUserEmail();
 

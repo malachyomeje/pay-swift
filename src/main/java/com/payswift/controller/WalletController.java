@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v5/wallet")
+@RequestMapping("/api/v1/wallet")
 public class WalletController {
 
     private final WalletService walletService;

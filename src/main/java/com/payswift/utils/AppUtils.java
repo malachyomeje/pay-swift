@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class BankUtils {
+public class AppUtils {
 
 
     // FOR FLUTTER WAVE
@@ -38,7 +38,7 @@ public class BankUtils {
         dateFormat.setTimeZone(lagosTimeZone);
         String formattedDateTime = dateFormat.format(new Date());
         // Concatenate date and random string
-        String requestId = formattedDateTime + BankUtils.generateRandomAlphabets();
+        String requestId = formattedDateTime + AppUtils.generateRandomAlphabets();
 
         return requestId;
     }
