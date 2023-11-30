@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.security.SecureRandom;
 import java.util.Optional;
+import java.util.Random;
 
 @RequiredArgsConstructor
 public class UsersUtils {
@@ -30,7 +31,11 @@ public class UsersUtils {
 
         return "PAY-SWIFT" + String.format("%04d", UserWalletPin);
     }
-
+    public String generateSerialNumber(String prefix) {
+        Random rand = new Random();
+        long x = (long) (rand.nextDouble() * 100000000000000L);
+        return prefix + String.format("%014d", x);
+    }
 
     public static String getAuthenticatedUserEmail() {
 

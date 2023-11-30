@@ -75,7 +75,7 @@ public class PayStackImp implements PayStackService {
            payStackRequestDto.setTransactionType(TransactionType.FUNDWALLET.getTransaction());
         }
 
-        System.out.println("tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+        System.out.println("");
 
 
         LOGGER.info("creating pay_stack_dto{} ", payStackRequestDto);
@@ -93,6 +93,7 @@ public class PayStackImp implements PayStackService {
             ResponseEntity<PayStackResponse> response = restTemplate.exchange
                     (PAY_STACK_DEPOSIT, HttpMethod.POST, entity, PayStackResponse.class);
 
+            LOGGER.info("getting entity{} ", entity);
             Transaction walletTransaction = Transaction.builder()
 
                     .name(users1.getFirstName() + " " + users1.getLastName())
@@ -104,6 +105,7 @@ public class PayStackImp implements PayStackService {
                     .build();
 
             transactionRepository.save(walletTransaction);
+            LOGGER.info("saving transaction {} ", walletTransaction);
             //  LOGGER.info("getting the url{} ",response.getBody().getData().getAuthorizationUrl());
            return new ResponseEntity(response.getBody().getData().getAuthorizationUrl(), HttpStatus.ACCEPTED);
 
@@ -126,7 +128,7 @@ public class PayStackImp implements PayStackService {
             throw new UserNotFoundException("user not found");
         }
             Users users = user.get();
-        LOGGER.info("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
+        LOGGER.info("entering verifyPayment");
 
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", "Bearer " + PAY_STACK_SECRET_KEY);
@@ -146,7 +148,7 @@ public class PayStackImp implements PayStackService {
 
         String url = PAY_STACK_VERIFY_TRANSACTION+reference;
 
-        log.info("Calling Paystack with URL: {}",url);
+        LOGGER.info("Calling Paystack with URL: {}",url);
 
         ResponseEntity<VerifyTransactionDto> response = restTemplate.exchange
                 (url, HttpMethod.GET, entity, VerifyTransactionDto.class);
@@ -163,7 +165,7 @@ public class PayStackImp implements PayStackService {
                 bank.setAmount(bank.getAmount()+transaction1.getAmount());
             }
 
-            log.error("Failed to verify payment");
+            LOGGER.error("Failed to verify payment");
         }
 
         return response.getBody();

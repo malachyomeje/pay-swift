@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class UsersController {
     private final static Logger LOGGER = LoggerFactory.getLogger( UsersController.class);
     @PostMapping("/signAppUser")
     public BaseResponse signUpUser(@RequestBody UsersDto usersDto){
-            LOGGER.info("entertainer UsersController");
+            LOGGER.info("entered UsersController");
         return usersService.signUpUser(usersDto);
     }
 
@@ -45,10 +46,12 @@ public class UsersController {
         return usersService.usersPaginationAndSorting(offset, pageSize, name);
     }
     @GetMapping("/findAllUsers")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public List<UsersDto>findAllUsers(){
         return usersService.findAllUsers();
     }
     @GetMapping("findUserByEmail/{email}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public  BaseResponse findUserByEmail (@PathVariable String email){
         return usersService.findUserByEmail(email);
     }
@@ -57,10 +60,12 @@ public class UsersController {
         return usersService.lockUserAccount(email);
     }
     @DeleteMapping("deleteUserAccount/{email}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public  BaseResponse deleteUserAccount (@PathVariable String email){
         return  usersService.deleteUserAccount(email);
     }
     @PutMapping("/updateUse")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public  BaseResponse updateUser(@RequestBody UpDatedUserDto upDatedUserDto){
         return usersService.updateUser(upDatedUserDto);
     }

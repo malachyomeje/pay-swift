@@ -1,6 +1,7 @@
 package com.payswift.dtos.request;
 
 import com.payswift.enums.Sex;
+import com.payswift.enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -34,5 +35,6 @@ public class UsersDto {
     private String country;
   //  @NotBlank(message = "sex must not be empty")
     private Sex sex;
+    private UserRole role;
 
   }

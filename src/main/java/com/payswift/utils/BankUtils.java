@@ -38,7 +38,7 @@ public class BankUtils {
         dateFormat.setTimeZone(lagosTimeZone);
         String formattedDateTime = dateFormat.format(new Date());
         // Concatenate date and random string
-        String requestId = formattedDateTime + VTPassUtils.generateRandomAlphabets();
+        String requestId = formattedDateTime + BankUtils.generateRandomAlphabets();
 
         return requestId;
     }

@@ -1,14 +1,13 @@
 package com.payswift.baying.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class BuyAirtimeResponse {
@@ -17,19 +16,20 @@ public class BuyAirtimeResponse {
     private String response_description;
     private String requestId;
     private String transactionId;
-    private BigDecimal amount;
-   // private String purchase_code;
+    private Double amount;
+    private String purchased_code;
+
 
     @Getter
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class TransactionDate{
-        private String date;
-        private Integer timezone_type;
+    public static class Transaction_Date{
+        private Date date;
+        private String timezone_type;
         private String timezone;
     }
 
-    private String purchase_code;
+   // private String purchased_code;
 
 }

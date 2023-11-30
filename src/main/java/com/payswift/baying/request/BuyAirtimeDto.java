@@ -1,11 +1,9 @@
 package com.payswift.baying.request;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@ToString
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,6 +14,5 @@ public class BuyAirtimeDto {
     private String serviceID;
     private Double  amount;
     private String phone;
-
 
 }
