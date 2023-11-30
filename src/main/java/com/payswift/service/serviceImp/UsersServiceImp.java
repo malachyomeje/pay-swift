@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 @Service
 @RequiredArgsConstructor
 public class UsersServiceImp implements UsersService {
@@ -62,6 +61,7 @@ public class UsersServiceImp implements UsersService {
             return new BaseResponse<>("Wrong PhoneNumber, Enter Correct PhoneNumber", usersDto.getPhoneNumber());
         }
        String token = jwtService.generateSignUpConfirmationToken(usersDto.getEmail());
+        LOGGER.info("creating user");
 
         Users appUsers = Users.builder()
                 .firstName(usersDto.getFirstName().toUpperCase())
@@ -75,10 +75,12 @@ public class UsersServiceImp implements UsersService {
                 .isEmailVerified(false)
                 .isLocked(false)
                 .sex(Sex.valueOf(usersDto.getSex().name().toUpperCase()))
-                .role(UserRole.USER)
+                .role(usersDto.getRole())
                .confirmationToken(token)
                 .build();
               usersRepository.save(appUsers);
+
+        LOGGER.info("creating pay_stack_dto{} ",appUsers);
 
 
 
@@ -92,7 +94,8 @@ public class UsersServiceImp implements UsersService {
         String link = "<h3>Hello "  + appUsers.getFirstName()  +
                 "<br> Click the link below to activate your account <a href=" + URL + "><br>Activate</a></h3>";
 
-        System.out.println(link);
+
+        LOGGER.info("creating link{} ",link);
 
         String subject = "Pay-Swift Verification Code";
 
@@ -101,6 +104,8 @@ public class UsersServiceImp implements UsersService {
         emailSenderDto.setSubject(subject);
         emailSenderDto.setContent(link);
         emailService.sendEmail(emailSenderDto);
+        LOGGER.info("registration complete ");
+
         return new BaseResponse<>("REGISTRATION SUCCESSFUL",
                 "You have successful registered. Check your email to verify your account");
     }

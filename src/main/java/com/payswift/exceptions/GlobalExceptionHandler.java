@@ -24,8 +24,6 @@ public class GlobalExceptionHandler {
                 .build();
     }
 
-
-
     @ExceptionHandler(value = {UserNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse UserNotFoundException(UserNotFoundException ex) {

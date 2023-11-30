@@ -1,19 +1,24 @@
 package com.payswift.utils;
 
+import lombok.RequiredArgsConstructor;
+
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 import java.util.TimeZone;
 
+@RequiredArgsConstructor
 public class VTPassUtils {
 
 
-    public static final String PUBLIC_KEY = "PK_858786fd2c69f59c6b2fc4ffc842b64f7a69ceea0ef";
-    public static final String SECRETE_KEY = "SK_102196807d8c552d7884fb81ca499ce10e87b0d2a9a";
+    public static final String PUBLIC_KEY = "PK_3943a264f51f16f37748a48b64b052687cc252447c1";
+    public static final String SECRETE_KEY = "SK_3078e74e7770ae273c7a976499cdab49b881dc830cd";
 
     public final static String PAY_BILL = "https://sandbox.vtpass.com/api/pay";
 
-    public static final String API_KEY = " 4a8134a5a083801a759bd43347d808b1";
+    public static final String API_KEY = "4a8134a5a083801a759bd43347d808b1";
 
 
     public static String generateRequestId() {
@@ -27,6 +32,7 @@ public class VTPassUtils {
 
         return requestId;
     }
+
     public static String generateRandomAlphabets() {
         StringBuilder randomStringBuilder = new StringBuilder(4);
         SecureRandom secureRandom = new SecureRandom();
@@ -41,4 +47,8 @@ public class VTPassUtils {
 
 
     }
+
 }
+
+
+
