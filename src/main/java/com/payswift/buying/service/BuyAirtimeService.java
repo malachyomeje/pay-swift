@@ -1,7 +1,7 @@
-package com.payswift.baying.service;
+package com.payswift.buying.service;
 
-import com.payswift.baying.response.BuyAirtimeResponse;
-import com.payswift.baying.response.QueryTransactionResponse;
+import com.payswift.buying.response.BuyAirtimeResponse;
+import com.payswift.buying.response.QueryTransactionResponse;
 
 
 public interface BuyAirtimeService {

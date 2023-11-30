@@ -1,9 +1,9 @@
 package com.payswift.controller;
 
 
-import com.payswift.baying.response.BuyAirtimeResponse;
-import com.payswift.baying.response.QueryTransactionResponse;
-import com.payswift.baying.service.BuyAirtimeService;
+import com.payswift.buying.response.BuyAirtimeResponse;
+import com.payswift.buying.response.QueryTransactionResponse;
+import com.payswift.buying.service.BuyAirtimeService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

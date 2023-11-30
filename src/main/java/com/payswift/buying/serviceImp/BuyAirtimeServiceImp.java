@@ -1,10 +1,10 @@
-package com.payswift.baying.serviceImp;
+package com.payswift.buying.serviceImp;
 
-import com.payswift.baying.request.BuyAirtimeDto;
-import com.payswift.baying.request.QueryTransactionResponseDto;
-import com.payswift.baying.response.BuyAirtimeResponse;
-import com.payswift.baying.response.QueryTransactionResponse;
-import com.payswift.baying.service.BuyAirtimeService;
+import com.payswift.buying.request.BuyAirtimeDto;
+import com.payswift.buying.request.QueryTransactionResponseDto;
+import com.payswift.buying.response.BuyAirtimeResponse;
+import com.payswift.buying.response.QueryTransactionResponse;
+import com.payswift.buying.service.BuyAirtimeService;
 import com.payswift.enums.TransactionType;
 import com.payswift.exceptions.UserNotFoundException;
 import com.payswift.exceptions.WalletTransactionException;
@@ -24,14 +24,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-
 import java.util.Optional;
 
 import static com.payswift.enums.TransactionStatus.PENDING;
 import static com.payswift.utils.VTPassUtils.*;
-
-
 
 @Slf4j
 @RequiredArgsConstructor
@@ -56,7 +52,6 @@ public class BuyAirtimeServiceImp implements BuyAirtimeService {
         }
         Users users1 = user.get();
 
-
         Optional<Wallet> findUserWallet = walletRepository.findById(users1.getUserWallet().getWalletId());
         if (findUserWallet.isEmpty()) {
             throw new WalletTransactionException("UserWallet not found");
@@ -68,7 +63,6 @@ public class BuyAirtimeServiceImp implements BuyAirtimeService {
         buyAirtimeDto.setAmount(amount);
         buyAirtimeDto.setPhone(phone);
         buyAirtimeDto.setRequest_id(VTPassUtils.generateRequestId());
-
 
         log.info("Calling vtpass with entity: {}",buyAirtimeDto);
         HttpHeaders headers = new HttpHeaders();
@@ -132,11 +126,9 @@ public class BuyAirtimeServiceImp implements BuyAirtimeService {
      LOGGER.info("Calling vtpass with entity: {}",entity);
 
      ResponseEntity<QueryTransactionResponse> response = restTemplate.exchange
-            (QUERY_TRANSACTION_STATUS, HttpMethod.POST, entity,  QueryTransactionResponse.class);
+             (QUERY_TRANSACTION_STATUS, HttpMethod.POST, entity,  QueryTransactionResponse.class);
         log.info("entered response: {}",response);
         return response.getBody();
-
-
 
 }
 

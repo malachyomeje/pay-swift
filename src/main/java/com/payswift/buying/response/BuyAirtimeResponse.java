@@ -1,9 +1,6 @@
-package com.payswift.baying.response;
+package com.payswift.buying.response;
 
 import lombok.*;
-
-import java.math.BigDecimal;
-import java.util.Date;
 
 @Getter
 @Setter
