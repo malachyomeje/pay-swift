@@ -1,6 +1,8 @@
-package com.payswift.auth;
+package com.payswift.controller;
 
 import com.payswift.dtos.response.BaseResponse;
+import com.payswift.dtos.request.AuthenticationRequest;
+import com.payswift.service.auth.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v0/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthenticationController {
 
 

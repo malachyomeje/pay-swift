@@ -1,4 +1,4 @@
-package com.payswift.bank.bankDtos.response;
+package com.payswift.dtos.externalapiDtos.response;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;

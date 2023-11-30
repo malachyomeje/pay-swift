@@ -1,6 +1,7 @@
-package com.payswift.auth;
+package com.payswift.service.auth;
 
 import com.payswift.config.JwtService;
+import com.payswift.dtos.request.AuthenticationRequest;
 import com.payswift.dtos.response.BaseResponse;
 import com.payswift.model.Users;
 import com.payswift.repository.UsersRepository;

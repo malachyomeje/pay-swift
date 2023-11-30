@@ -1,10 +1,10 @@
-package com.payswift.buying.serviceImp;
+package com.payswift.service.serviceImp;
 
-import com.payswift.buying.request.BuyAirtimeDto;
-import com.payswift.buying.request.QueryTransactionResponseDto;
-import com.payswift.buying.response.BuyAirtimeResponse;
-import com.payswift.buying.response.QueryTransactionResponse;
-import com.payswift.buying.service.BuyAirtimeService;
+import com.payswift.dtos.request.BuyAirtimeDto;
+import com.payswift.dtos.request.QueryTransactionResponseDto;
+import com.payswift.dtos.response.BuyAirtimeResponse;
+import com.payswift.dtos.response.QueryTransactionResponse;
+import com.payswift.service.AirtimeService;
 import com.payswift.enums.TransactionType;
 import com.payswift.exceptions.UserNotFoundException;
 import com.payswift.exceptions.WalletTransactionException;
@@ -32,12 +32,12 @@ import static com.payswift.utils.VTPassUtils.*;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class BuyAirtimeServiceImp implements BuyAirtimeService {
+public class AirtimeServiceImpl implements AirtimeService {
 
     private final UsersRepository usersRepository;
     private final WalletRepository walletRepository;
     private final TransactionRepository transactionRepository;
-    private final static Logger LOGGER = LoggerFactory.getLogger(BuyAirtimeServiceImp.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(AirtimeServiceImpl.class);
 
     @Override
     public BuyAirtimeResponse buyAirtime(String phone, Double amount, String serviceID){

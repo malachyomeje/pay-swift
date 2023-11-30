@@ -1,6 +1,6 @@
 package com.payswift.service.serviceImp;
 
-import com.payswift.bank.service.FlutterWaveService;
+import com.payswift.service.flutterwaveservice.FlutterWaveService;
 import com.payswift.config.JwtService;
 import com.payswift.dtos.request.EmailDto;
 import com.payswift.dtos.request.UpDatedUserDto;
@@ -8,7 +8,6 @@ import com.payswift.dtos.request.UsersDto;
 import com.payswift.dtos.response.BaseResponse;
 import com.payswift.dtos.response.PagingAndSortingResponse;
 import com.payswift.enums.Sex;
-import com.payswift.enums.UserRole;
 
 import com.payswift.exceptions.UserNotFoundException;
 import com.payswift.model.Users;

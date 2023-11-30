@@ -1,4 +1,4 @@
-package com.payswift.buying.response;
+package com.payswift.dtos.response;
 
 
 import lombok.*;

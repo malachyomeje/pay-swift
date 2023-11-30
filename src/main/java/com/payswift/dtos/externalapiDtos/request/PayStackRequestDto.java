@@ -1,4 +1,4 @@
-package com.payswift.bank.bankDtos.request;
+package com.payswift.dtos.externalapiDtos.request;
 
 import lombok.*;
 
