@@ -11,7 +11,7 @@ import lombok.Setter;
 //@NoArgsConstructor
 public enum TransactionType {
 
-    CREDIT("credit"), DEBIT("debit"), FUNDWALLET("fundwallet"), WITHDRAWAL("withdrawal"), MAKEPAYMENT("makePayment");
+    CREDIT("credit"), DEBIT("debit"), BUYAIRTIME("buyairtime"), FUNDWALLET("fundwallet"), WITHDRAWAL("withdrawal"), MAKEPAYMENT("makePayment");
     private final String transaction ;
 
 }

@@ -17,6 +17,7 @@ public class VTPassUtils {
     public static final String SECRETE_KEY = "SK_3078e74e7770ae273c7a976499cdab49b881dc830cd";
 
     public final static String PAY_BILL = "https://sandbox.vtpass.com/api/pay";
+    public final static  String QUERY_TRANSACTION_STATUS= "https://sandbox.vtpass.com/api/requery";
 
     public static final String API_KEY = "4a8134a5a083801a759bd43347d808b1";
 
