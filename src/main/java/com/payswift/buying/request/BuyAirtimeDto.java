@@ -1,4 +1,4 @@
-package com.payswift.baying.request;
+package com.payswift.buying.request;
 
 
 import lombok.*;
