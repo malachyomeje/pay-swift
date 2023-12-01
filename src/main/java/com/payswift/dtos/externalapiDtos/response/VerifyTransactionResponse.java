@@ -11,7 +11,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class VerifyTransactionDto {
+public class VerifyTransactionResponse {
     private boolean status;
     private String message;
 

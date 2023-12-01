@@ -2,7 +2,7 @@ package com.payswift.service.paystackservice;
 
 import com.payswift.dtos.externalapiDtos.request.PayStackRequestDto;
 import com.payswift.dtos.externalapiDtos.response.PayStackResponse;
-import com.payswift.dtos.externalapiDtos.response.VerifyTransactionDto;
+import com.payswift.dtos.externalapiDtos.response.VerifyTransactionResponse;
 import com.payswift.enums.TransactionType;
 import com.payswift.exceptions.UserNotFoundException;
 import com.payswift.exceptions.WalletTransactionException;
@@ -113,7 +113,7 @@ public class PayStackImp implements PayStackService {
 
 
     @Override
-    public VerifyTransactionDto completeTransaction(String reference) {
+    public VerifyTransactionResponse completeTransaction(String reference) {
 
         String userEmail = getAuthenticatedUserEmail();
 
@@ -145,8 +145,8 @@ public class PayStackImp implements PayStackService {
 
         LOGGER.info("Calling Paystack with URL: {}",url);
 
-        ResponseEntity<VerifyTransactionDto> response = restTemplate.exchange
-                (url, HttpMethod.GET, entity, VerifyTransactionDto.class);
+        ResponseEntity<VerifyTransactionResponse> response = restTemplate.exchange
+                (url, HttpMethod.GET, entity, VerifyTransactionResponse.class);
         log.info("Response from Paystack Verification: {}", response);
 
         if(response.getBody()!=null){

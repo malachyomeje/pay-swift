@@ -1,6 +1,6 @@
 package com.payswift.service.paystackservice;
 
-import com.payswift.dtos.externalapiDtos.response.VerifyTransactionDto;
+import com.payswift.dtos.externalapiDtos.response.VerifyTransactionResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface PayStackService {
@@ -8,7 +8,7 @@ public interface PayStackService {
 
    // String verifyPayment(String reference);
 
-    VerifyTransactionDto completeTransaction(String reference);
+    VerifyTransactionResponse completeTransaction(String reference);
 
     // R String payment(String transactionType, Double amount);
 
