@@ -34,5 +34,4 @@ public class Wallet {
     private List<Transaction> transactions;
 
 
-
 }

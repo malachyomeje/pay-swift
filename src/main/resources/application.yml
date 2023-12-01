@@ -20,6 +20,7 @@ spring:
     secret: 556A586E3272357538782F413F4428472B4B6250645367566B59703373367639
     jwtExpirationTime: 604800000
 
+
   mail:
     host: smtp.gmail.com
     port: 587
