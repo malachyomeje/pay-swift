@@ -61,7 +61,6 @@ public class UsersServiceImp implements UsersService {
         }
        String token = jwtService.generateSignUpConfirmationToken(usersDto.getEmail());
         LOGGER.info("creating user");
-
         Users appUsers = Users.builder()
                 .firstName(usersDto.getFirstName().toUpperCase())
                 .lastName(usersDto.getLastName().toUpperCase())
@@ -142,7 +141,6 @@ public class UsersServiceImp implements UsersService {
     public PagingAndSortingResponse<Page<Users>> usersPaginationAndSorting(int offset, int pageSize, String name) {
         Page<Users> pagingAndSorting = usersRepository.findAll(PageRequest.of(offset, pageSize).withSort(Sort.by(name)));
         return new PagingAndSortingResponse<>(pagingAndSorting.getSize(), pagingAndSorting);
-
     }
 
     @Override
@@ -190,7 +188,6 @@ public class UsersServiceImp implements UsersService {
     if (!user.isLocked()) {
         // If the account is not locked, lock it
         user.setLocked(false);
-
     }
         return new BaseResponse("Account locked successfully", user);
 }

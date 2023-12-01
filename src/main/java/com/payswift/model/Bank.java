@@ -30,8 +30,8 @@ public class Bank {
 
     @JsonProperty("amount")
     private Double amount;
-
     @JsonProperty("response_code")
+
     private String responseCode;
 
     @JsonProperty("response_message")
