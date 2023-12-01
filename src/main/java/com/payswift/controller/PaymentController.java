@@ -1,7 +1,7 @@
 package com.payswift.controller;
 
 
-import com.payswift.dtos.externalapiDtos.response.VerifyTransactionDto;
+import com.payswift.dtos.externalapiDtos.response.VerifyTransactionResponse;
 import com.payswift.service.paystackservice.PayStackService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ public class PaymentController {
 
 
         @GetMapping("/reference/{reference}")
-    public VerifyTransactionDto completeTransaction(@PathVariable String reference) {
+    public VerifyTransactionResponse completeTransaction(@PathVariable String reference) {
             System.out.println("ENTER verifyPayment2 ");
             return paymentService.completeTransaction(reference);
     }
