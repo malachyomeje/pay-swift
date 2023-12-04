@@ -14,6 +14,7 @@ import java.util.Date;
 public class VerifyTransactionResponse {
     private boolean status;
     private String message;
+    private VerifyData verifyData;
 
     @Getter
     @Setter
