@@ -54,8 +54,6 @@ public class Bank {
 
     @JsonProperty("expiry_date")
     private String expiryDate;
-
-
 }
 
 
