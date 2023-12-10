@@ -121,6 +121,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>payswift</finalName>
 	</build>
 
 </project>
