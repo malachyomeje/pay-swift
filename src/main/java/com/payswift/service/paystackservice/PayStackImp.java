@@ -96,7 +96,7 @@ public class PayStackImp implements PayStackService {
                     .wallet(userWallet)
                     .transactionType(TransactionType.valueOf(payStackRequestDto.getTransactionType().toUpperCase()))
                     .transactionStatus(PENDING)
-                    .amount(payStackRequestDto.getAmount()+users1.getUserWallet().getAccountBalance())
+                    .amount(amount+users1.getUserWallet().getAccountBalance())
                     .transactionReference(payStackRequestDto.getReference())
                     .build();
             transactionRepository.save(walletTransaction);
