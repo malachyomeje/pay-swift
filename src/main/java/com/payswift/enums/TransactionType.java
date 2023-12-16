@@ -6,9 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-// @Setter
 @AllArgsConstructor
-//@NoArgsConstructor
+
 public enum TransactionType {
 
     CREDIT("credit"), DEBIT("debit"), BUY_AIRTIME("buy_airtime"), BUY_DATA("buy_data"), FUND_WALLET("fund_wallet"),
