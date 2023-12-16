@@ -11,4 +11,5 @@ public interface WalletRepository extends JpaRepository<Wallet, Long> {
 
     List<Wallet> findByAccountNumber(String accountNumber );
 
+
 }

@@ -15,5 +15,6 @@ public interface TransactionService {
     PagingAndSortingResponse<Page<Transaction>> transactionPaginationAndSorting(int offset, int pageSize, String name);
 
 
-    BaseResponse findUserTransaction();
+
+    BaseResponse findUserTransaction(String email);
 }

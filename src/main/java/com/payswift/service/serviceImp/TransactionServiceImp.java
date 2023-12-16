@@ -34,7 +34,6 @@ public class TransactionServiceImp implements TransactionService {
         List<Transaction> sortingTransaction = transactionRepository.findAll(Sort.by(Sort.Direction.ASC, name));
         return new PagingAndSortingResponse<>(sortingTransaction.size(), sortingTransaction);
     }
-
     @Override
     public PagingAndSortingResponse<Page<Transaction>> transactionPagination(int offset, int pageSize) {
         Page<Transaction> transactionPaging = transactionRepository.findAll(PageRequest.of(offset, pageSize));
@@ -49,11 +48,11 @@ public class TransactionServiceImp implements TransactionService {
     }
 
 @Override
-    public BaseResponse findUserTransaction() {
+    public BaseResponse findUserTransaction(String email) {
     String email1 = SecurityContextHolder.getContext().getAuthentication().getName();
 
     Optional<Users> users = usersRepository.findByEmail(email1);
-        if ( !users.isPresent()) {
+        if (users.isEmpty()) {
             throw new UserNotFoundException("USER DOES NOT EXIST");
         }
         Users users3 =users.get();
@@ -62,13 +61,11 @@ public class TransactionServiceImp implements TransactionService {
             throw new WalletTransactionException("WALLET DOES NOT EXIST");
         }
         Wallet wallet1 = wallet.get();
+        List<Transaction> transaction = wallet1.getTransactions();
+    if (transaction .isEmpty()) {
+        throw new WalletTransactionException("transaction DOES NOT EXIST");
+    }
 
-        Optional<Transaction> transaction = transactionRepository.findByWallet((Wallet) wallet1.getTransactions());
-        if (transaction .isEmpty()) {
-            throw new WalletTransactionException("transaction DOES NOT EXIST");
-        }
-        Transaction transaction1 = transaction.get();
-
-        return new BaseResponse<>("SSuccessful",transaction1);
+        return new BaseResponse<>("SSuccessful",transaction);
     }
 }

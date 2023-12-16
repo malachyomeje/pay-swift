@@ -92,7 +92,7 @@ public class AirtimeServiceImpl implements AirtimeService {
         Transaction walletTransaction = Transaction.builder()
                 .name(users1.getFirstName() + " " + users1.getLastName())
                 .wallet(userWallet)
-                .transactionType(TransactionType.BUYAIRTIME)
+                .transactionType(TransactionType.BUY_AIRTIME)
                 .transactionStatus(PENDING)
                 .amount(buyAirtimeDto.getAmount())
                 .transactionReference(buyAirtimeDto.getRequest_id())
