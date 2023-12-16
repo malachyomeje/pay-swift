@@ -4,10 +4,13 @@ package com.payswift.service.serviceImp;
 import com.payswift.dtos.request.BuyDataDto;
 import com.payswift.dtos.response.BuyDataResponse;
 import com.payswift.dtos.response.BuyDataVariationCodeResponse;
+import com.payswift.enums.TransactionType;
 import com.payswift.exceptions.UserNotFoundException;
 import com.payswift.exceptions.WalletTransactionException;
+import com.payswift.model.Transaction;
 import com.payswift.model.Users;
 import com.payswift.model.Wallet;
+import com.payswift.repository.TransactionRepository;
 import com.payswift.repository.UsersRepository;
 import com.payswift.repository.WalletRepository;
 import com.payswift.service.DataService;
@@ -22,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
+import static com.payswift.enums.TransactionStatus.PENDING;
 import static com.payswift.utils.VTPassUtils.*;
 
 @Service
@@ -29,6 +33,7 @@ import static com.payswift.utils.VTPassUtils.*;
 public class DataServiceImpl implements DataService {
     private final UsersRepository usersRepository;
     private final WalletRepository walletRepository;
+    private final TransactionRepository transactionRepository;
 
     private final static Logger LOGGER = LoggerFactory.getLogger(DataServiceImpl.class);
 
@@ -79,7 +84,6 @@ public class DataServiceImpl implements DataService {
         Optional<Users> user = usersRepository.findByEmail(userEmail);
         if (user.isEmpty()) {
             throw new UserNotFoundException("user not found");
-
         }
         Users users1 = user.get();
 
@@ -89,11 +93,8 @@ public class DataServiceImpl implements DataService {
         }
         Wallet userWallet = findUserWallet.get();
 
-
         if (userWallet.getAccountBalance()<buyDataDto.getAmount()){
             throw new WalletTransactionException("INSUFFICIENT BALANCE,FUND-WALLET");
-
-
         }
         BuyDataDto buyDataDto1 = new BuyDataDto();
         buyDataDto1.setRequest_id(VTPassUtils.generateRequestId());
@@ -103,7 +104,6 @@ public class DataServiceImpl implements DataService {
         buyDataDto1.setAmount(buyDataDto.getAmount());
         buyDataDto1.setPhone(buyDataDto.getPhone());
         LOGGER.info("Entering buyDataDto with entity: {}", buyDataDto1);
-
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("api-key", API_KEY);
@@ -116,6 +116,16 @@ public class DataServiceImpl implements DataService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<BuyDataResponse> response = restTemplate.exchange
                 (BUY_DATA, HttpMethod.POST, entity, BuyDataResponse.class);
+
+        Transaction walletTransaction = Transaction.builder()
+                .name(users1.getFirstName() + " " + users1.getLastName())
+                .wallet(userWallet)
+                .transactionType(TransactionType.BUY_DATA)
+                .transactionStatus(PENDING)
+                .amount(buyDataDto1.getAmount())
+                .transactionReference(buyDataDto1.getRequest_id())
+                .build();
+        transactionRepository.save(walletTransaction);
         return response.getBody();
     }
 

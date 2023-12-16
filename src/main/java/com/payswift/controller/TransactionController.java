@@ -19,23 +19,20 @@ import java.util.List;
 @RequestMapping("/api/v1/transaction")
 public class TransactionController {
     private  final TransactionService transactionService;
-
-
-    @GetMapping("sorting/{name}")
+    @GetMapping("/sorting/{name}")
     public PagingAndSortingResponse<List<Transaction>> sorting (@PathVariable String name ) {
         return transactionService.transactionSorting(name);
     }
-    @GetMapping("page/{offset}/{pageSize}")
+    @GetMapping("/page/{offset}/{pageSize}")
     public PagingAndSortingResponse<Page<Transaction>> pagination(@PathVariable int offset, @PathVariable int pageSize){
         return transactionService.transactionPagination(offset,pageSize);
     }
-    @GetMapping("page/{offset}/{pageSize}/{name}")
+    @GetMapping("/page/{offset}/{pageSize}/{name}")
     public PagingAndSortingResponse<Page<Transaction>> paginationAndSorting(@PathVariable int offset, @PathVariable int pageSize,@PathVariable String name) {
         return transactionService.transactionPaginationAndSorting(offset, pageSize, name);
     }
-
-    @GetMapping("findUserTransaction")
-    public BaseResponse findUserTransaction() {
-        return transactionService.findUserTransaction();
+    @GetMapping("/findUserTransaction/{email}")
+    public BaseResponse findUserTransaction(@PathVariable String email) {
+        return transactionService.findUserTransaction(email);
     }
 }

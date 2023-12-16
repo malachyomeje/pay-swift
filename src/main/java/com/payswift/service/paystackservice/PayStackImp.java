@@ -68,10 +68,10 @@ public class PayStackImp implements PayStackService {
         payStackRequestDto.setTransactionType(transactionType);
         payStackRequestDto.setCallback_url("www.google.com");
 
-        if (transactionType.equalsIgnoreCase("makepayment")) {
-            payStackRequestDto.setTransactionType(TransactionType.MAKEPAYMENT.getTransaction());
+        if (transactionType.equalsIgnoreCase("make_payment")) {
+            payStackRequestDto.setTransactionType(TransactionType.MAKE_PAYMENT.getTransaction());
        } else {
-           payStackRequestDto.setTransactionType(TransactionType.FUNDWALLET.getTransaction());
+           payStackRequestDto.setTransactionType(TransactionType.FUND_WALLET.getTransaction());
         }
 
         LOGGER.info("creating pay_stack_dto{} ", payStackRequestDto);
@@ -94,7 +94,8 @@ public class PayStackImp implements PayStackService {
 
                     .name(users1.getFirstName() + " " + users1.getLastName())
                     .wallet(userWallet)
-                    .transactionType(TransactionType.valueOf(payStackRequestDto.getTransactionType().toUpperCase()))
+                   // .transactionType(TransactionType.valueOf(payStackRequestDto.getTransactionType().toUpperCase()))
+                    .transactionType(TransactionType.MAKE_PAYMENT)
                     .transactionStatus(PENDING)
                     .amount(amount+users1.getUserWallet().getAccountBalance())
                     .transactionReference(payStackRequestDto.getReference())
