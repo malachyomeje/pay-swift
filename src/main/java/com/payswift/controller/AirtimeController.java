@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/buying")
+@RequestMapping("/api/v1/buyingAirtime")
 public class AirtimeController {
  private final AirtimeService airtimeService;
     private final static Logger LOGGER = LoggerFactory.getLogger( UsersController.class);
