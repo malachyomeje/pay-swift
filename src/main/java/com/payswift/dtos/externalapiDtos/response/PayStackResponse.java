@@ -15,9 +15,6 @@ public class PayStackResponse {
     private Data data;
 
 
-
-
-
     @Getter
     @Setter
     @NoArgsConstructor

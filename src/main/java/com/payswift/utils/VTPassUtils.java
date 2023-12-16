@@ -19,6 +19,8 @@ public class VTPassUtils {
     public final static String PAY_BILL = "https://sandbox.vtpass.com/api/pay";
     public final static  String QUERY_TRANSACTION_STATUS= "https://sandbox.vtpass.com/api/requery";
 
+    public final static String GET_VARIATION_CODES = "https://sandbox.vtpass.com/api/service-variations?serviceID=";
+
     public static final String API_KEY = "4a8134a5a083801a759bd43347d808b1";
 
 

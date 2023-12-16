@@ -1,5 +1,6 @@
 package com.payswift.dtos.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.util.List;
@@ -22,11 +23,12 @@ public class BuyDataVariationCodeResponse {
     @NoArgsConstructor
     public static class Content {
 
+        @JsonProperty("ServiceName")
         private String ServiceName;
         private String serviceID;
         private String convinience_fee;
-        private List<Variation> variations;
-
+        @JsonProperty("varations")
+        private List<Varations> varations;
 
 
         @Getter
@@ -34,7 +36,7 @@ public class BuyDataVariationCodeResponse {
         @ToString
         @AllArgsConstructor
         @NoArgsConstructor
-        public static class Variation {
+        public static class Varations {
 
             private String variation_code;
             private String name;

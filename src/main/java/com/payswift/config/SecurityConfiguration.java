@@ -33,7 +33,8 @@ public class SecurityConfiguration {
                        "/api/v1/paystack/**",
                         "/api/v1/wallet/**",
                         "/api/v1/transaction/**",
-                        "/api/v1/buying/**",
+                        "/api/v1/buyingAirtime/**",
+                        "/api/v1/buyingData/**",
                         "/v3/api-docs/**",
                         "/configuration/**",
                         "/swagger*/**"
