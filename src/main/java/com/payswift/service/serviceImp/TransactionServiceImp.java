@@ -61,11 +61,11 @@ public class TransactionServiceImp implements TransactionService {
             throw new WalletTransactionException("WALLET DOES NOT EXIST");
         }
         Wallet wallet1 = wallet.get();
+
         List<Transaction> transaction = wallet1.getTransactions();
     if (transaction .isEmpty()) {
         throw new WalletTransactionException("transaction DOES NOT EXIST");
     }
-
-        return new BaseResponse<>("SSuccessful",transaction);
+           return new BaseResponse<>("SSuccessful",transaction);
     }
 }
