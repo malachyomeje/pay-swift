@@ -1,6 +1,8 @@
 package com.payswift.service.serviceImp;
 
 
+import com.payswift.dtos.request.BuyDataDto;
+import com.payswift.dtos.response.BuyDataResponse;
 import com.payswift.dtos.response.BuyDataVariationCodeResponse;
 import com.payswift.exceptions.UserNotFoundException;
 import com.payswift.exceptions.WalletTransactionException;
@@ -10,6 +12,7 @@ import com.payswift.repository.UsersRepository;
 import com.payswift.repository.WalletRepository;
 import com.payswift.service.DataService;
 import com.payswift.utils.UsersUtils;
+import com.payswift.utils.VTPassUtils;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,6 +72,52 @@ public class DataServiceImpl implements DataService {
         return response.getBody();
     }
 
+    @Override
+    public BuyDataResponse BuyData(BuyDataDto buyDataDto){
+
+        String userEmail = UsersUtils.getAuthenticatedUserEmail();
+        Optional<Users> user = usersRepository.findByEmail(userEmail);
+        if (user.isEmpty()) {
+            throw new UserNotFoundException("user not found");
+
+        }
+        Users users1 = user.get();
+
+        Optional<Wallet> findUserWallet = walletRepository.findById(users1.getUserWallet().getWalletId());
+        if (findUserWallet.isEmpty()) {
+            throw new WalletTransactionException("UserWallet not found");
+        }
+        Wallet userWallet = findUserWallet.get();
+
+
+        if (userWallet.getAccountBalance()<buyDataDto.getAmount()){
+            throw new WalletTransactionException("INSUFFICIENT BALANCE,FUND-WALLET");
+
+
+        }
+        BuyDataDto buyDataDto1 = new BuyDataDto();
+        buyDataDto1.setRequest_id(VTPassUtils.generateRequestId());
+        buyDataDto1.setServiceID(buyDataDto.getServiceID());
+        buyDataDto1.setBillersCode(buyDataDto.getBillersCode());
+        buyDataDto1.setVariation_code(buyDataDto.getVariation_code());
+        buyDataDto1.setAmount(buyDataDto.getAmount());
+        buyDataDto1.setPhone(buyDataDto.getPhone());
+        LOGGER.info("Entering buyDataDto with entity: {}", buyDataDto1);
+
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("api-key", API_KEY);
+        headers.set("secret-key", SECRETE_KEY);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<BuyDataDto> entity = new HttpEntity<>(buyDataDto1, headers);
+        LOGGER.info("Calling vtpass with entity: {}", entity);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<BuyDataResponse> response = restTemplate.exchange
+                (BUY_DATA, HttpMethod.POST, entity, BuyDataResponse.class);
+        return response.getBody();
+    }
 
 
 }

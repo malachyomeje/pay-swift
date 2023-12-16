@@ -1,8 +1,9 @@
 package com.payswift.controller;
 
+import com.payswift.dtos.request.BuyDataDto;
+import com.payswift.dtos.response.BuyDataResponse;
 import com.payswift.dtos.response.BuyDataVariationCodeResponse;
 import com.payswift.service.DataService;
-import com.payswift.service.serviceImp.DataServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,12 @@ public class DataController {
     public BuyDataVariationCodeResponse DataVariationCode(@RequestParam String serviceID){
         LOGGER.info("ENTER DataCONTROLLER");
        return dataService.DataVariationCode(serviceID);
+    }
 
+    @PostMapping("/BuyData")
+    public BuyDataResponse BuyData(@RequestBody BuyDataDto buyDataDto){
+        LOGGER.info("ENTER buyingData");
+        return dataService.BuyData(buyDataDto);
 
     }
 
