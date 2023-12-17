@@ -1,7 +1,7 @@
 package com.payswift.controller;
 
 import com.payswift.dtos.response.BaseResponse;
-import com.payswift.dtos.request.AuthenticationRequest;
+import com.payswift.dtos.request.AuthenticationRequestDto;
 import com.payswift.service.auth.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +20,7 @@ public class AuthenticationController {
     private final AuthenticationService service;
 
     @PostMapping("/authenticate")
-    public BaseResponse register(@RequestBody AuthenticationRequest request)
+    public BaseResponse register(@RequestBody AuthenticationRequestDto request)
 
     {
         return service.authenticate(request);

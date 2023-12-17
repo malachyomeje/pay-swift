@@ -136,7 +136,6 @@ public class DataServiceImpl implements DataService {
         return response.getBody();
     }
 
-
     @Override
     public QueryDataTransactionResponse confirmDataTransaction(String request_id){
 
@@ -177,7 +176,7 @@ public class DataServiceImpl implements DataService {
                 (CONFIRM_DATA, HttpMethod.POST, entity, QueryDataTransactionResponse.class);
 
         if (response.getBody() != null) {
-            if (response.getBody().getResponse_description().equals("TRANSACTION SUCCESSFUL")) {
+            if (response.getBody().getContent().getTransactions().getStatus().equals("delivered")) {
                 Transaction transaction1 = transaction3.get();
                 transaction1.setTransactionStatus(COMPLETED);
                 userWallet.setAccountBalance(userWallet.getAccountBalance()-transaction1.getAmount());
