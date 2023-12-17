@@ -3,7 +3,6 @@ package com.payswift.service.serviceImp;
 
 import com.payswift.dtos.request.BuyDataDto;
 import com.payswift.dtos.request.EmailDto;
-import com.payswift.dtos.request.QueryAirtimeTransactionResponseDto;
 import com.payswift.dtos.request.QueryDataTransactionResponseDto;
 import com.payswift.dtos.response.BuyDataResponse;
 import com.payswift.dtos.response.BuyDataVariationCodeResponse;
