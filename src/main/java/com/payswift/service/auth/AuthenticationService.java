@@ -1,7 +1,7 @@
 package com.payswift.service.auth;
 
 import com.payswift.config.JwtService;
-import com.payswift.dtos.request.AuthenticationRequest;
+import com.payswift.dtos.request.AuthenticationRequestDto;
 import com.payswift.dtos.response.BaseResponse;
 import com.payswift.model.Users;
 import com.payswift.repository.UsersRepository;
@@ -24,7 +24,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
 
-    public BaseResponse authenticate(AuthenticationRequest request) {
+    public BaseResponse authenticate(AuthenticationRequestDto request) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
