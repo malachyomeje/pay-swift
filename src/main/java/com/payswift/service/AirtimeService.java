@@ -1,11 +1,11 @@
 package com.payswift.service;
 
 import com.payswift.dtos.response.BuyAirtimeResponse;
-import com.payswift.dtos.response.QueryTransactionResponse;
+import com.payswift.dtos.response.QueryAirtimeTransactionResponse;
 
 
 public interface AirtimeService {
     BuyAirtimeResponse buyAirtime(String phone, Double amount, String serviceID);
 
-    QueryTransactionResponse confirmBuyAirtime(String request_id);
+    QueryAirtimeTransactionResponse confirmBuyAirtime(String request_id);
 }
