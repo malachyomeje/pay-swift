@@ -2,9 +2,9 @@ package com.payswift.service.serviceImp;
 
 import com.payswift.dtos.request.BuyAirtimeDto;
 import com.payswift.dtos.request.EmailDto;
-import com.payswift.dtos.request.QueryTransactionResponseDto;
+import com.payswift.dtos.request.QueryAirtimeTransactionResponseDto;
 import com.payswift.dtos.response.BuyAirtimeResponse;
-import com.payswift.dtos.response.QueryTransactionResponse;
+import com.payswift.dtos.response.QueryAirtimeTransactionResponse;
 import com.payswift.service.AirtimeService;
 import com.payswift.enums.TransactionType;
 import com.payswift.exceptions.UserNotFoundException;
@@ -104,7 +104,7 @@ public class AirtimeServiceImpl implements AirtimeService {
     }
 
     @Override
-    public QueryTransactionResponse confirmBuyAirtime(String request_id) {
+    public QueryAirtimeTransactionResponse confirmBuyAirtime(String request_id) {
 
         LOGGER.info("entered confirmBuyAirtime");
 
@@ -127,21 +127,21 @@ public class AirtimeServiceImpl implements AirtimeService {
         }
 
 
-        QueryTransactionResponseDto queryTransactionResponse = new QueryTransactionResponseDto();
-        queryTransactionResponse.setRequest_id(request_id);
+        QueryAirtimeTransactionResponseDto queryAirtimeTransactionResponseDto = new QueryAirtimeTransactionResponseDto();
+        queryAirtimeTransactionResponseDto.setRequest_id(request_id);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("api-key", API_KEY);
         headers.set("secret-key", SECRETE_KEY);
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<QueryTransactionResponseDto> entity = new HttpEntity<>(queryTransactionResponse, headers);
+        HttpEntity<QueryAirtimeTransactionResponseDto> entity = new HttpEntity<>(queryAirtimeTransactionResponseDto, headers);
 
         RestTemplate restTemplate = new RestTemplate();
         LOGGER.info("Calling vtpass with entity: {}", entity);
 
-        ResponseEntity<QueryTransactionResponse> response = restTemplate.exchange
-                (QUERY_TRANSACTION_STATUS, HttpMethod.POST, entity, QueryTransactionResponse.class);
+        ResponseEntity<QueryAirtimeTransactionResponse> response = restTemplate.exchange
+                (QUERY_TRANSACTION_STATUS, HttpMethod.POST, entity, QueryAirtimeTransactionResponse.class);
         log.info("entered response: {}", response);
 
         if (response.getBody() != null) {

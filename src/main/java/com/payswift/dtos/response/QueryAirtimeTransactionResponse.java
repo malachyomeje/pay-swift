@@ -8,7 +8,7 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public  class QueryTransactionResponse {
+public  class QueryAirtimeTransactionResponse {
 
     private  String code;
     private Content content;
@@ -43,8 +43,6 @@ public  class QueryTransactionResponse {
     private String transactionId;
         }
 
-
     }
-
 
 }

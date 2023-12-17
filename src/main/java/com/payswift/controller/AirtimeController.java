@@ -2,7 +2,7 @@ package com.payswift.controller;
 
 
 import com.payswift.dtos.response.BuyAirtimeResponse;
-import com.payswift.dtos.response.QueryTransactionResponse;
+import com.payswift.dtos.response.QueryAirtimeTransactionResponse;
 import com.payswift.service.AirtimeService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ public class AirtimeController {
 
     }
     @PostMapping("/confirmBuyAirtime")
-    public QueryTransactionResponse confirmBuyAirtime(@RequestParam String request_id){
+    public QueryAirtimeTransactionResponse confirmBuyAirtime(@RequestParam String request_id){
         return airtimeService.confirmBuyAirtime(request_id);
     }
 }
