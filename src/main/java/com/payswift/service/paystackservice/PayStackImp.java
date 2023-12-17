@@ -94,7 +94,6 @@ public class PayStackImp implements PayStackService {
 
                     .name(users1.getFirstName() + " " + users1.getLastName())
                     .wallet(userWallet)
-                   // .transactionType(TransactionType.valueOf(payStackRequestDto.getTransactionType().toUpperCase()))
                     .transactionType(TransactionType.MAKE_PAYMENT)
                     .transactionStatus(PENDING)
                     .amount(amount+users1.getUserWallet().getAccountBalance())
@@ -102,8 +101,7 @@ public class PayStackImp implements PayStackService {
                     .build();
             transactionRepository.save(walletTransaction);
             LOGGER.info("saving transaction {} ", walletTransaction);
-           return new ResponseEntity(response.getBody().getData().getAuthorizationUrl(), HttpStatus.ACCEPTED);
-
+           return new ResponseEntity(response.getBody().getData(), HttpStatus.ACCEPTED);
 
         } catch (HttpClientErrorException e) {
             LOGGER.info(e.getMessage());

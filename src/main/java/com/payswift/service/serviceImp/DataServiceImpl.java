@@ -54,18 +54,12 @@ public class DataServiceImpl implements DataService {
             throw new UserNotFoundException("user not found");
 
         }
-        Users users1 = user.get();
-
-        Optional<Wallet> findUserWallet = walletRepository.findById(users1.getUserWallet().getWalletId());
-        if (findUserWallet.isEmpty()) {
-            throw new WalletTransactionException("UserWallet not found");
-        }
-        Wallet userWallet = findUserWallet.get();
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("api-key", API_KEY);
         headers.set("public-key", PUBLIC_KEY);
         headers.setContentType(MediaType.APPLICATION_JSON);
+
         LOGGER.info("Calling DataVariationCode with HEADER: {}",headers);
 
         HttpEntity<String> entity = new HttpEntity<>( headers);
