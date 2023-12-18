@@ -7,7 +7,7 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class QueryDataTransactionResponseDto {
+public class QueryDataTransactionDto {
     private String request_id;
 
 }
