@@ -3,7 +3,7 @@ package com.payswift.service.serviceImp;
 
 import com.payswift.dtos.request.BuyDataDto;
 import com.payswift.dtos.request.EmailDto;
-import com.payswift.dtos.request.QueryDataTransactionResponseDto;
+import com.payswift.dtos.request.QueryDataTransactionDto;
 import com.payswift.dtos.response.BuyDataResponse;
 import com.payswift.dtos.response.BuyDataVariationCodeResponse;
 import com.payswift.dtos.response.QueryDataTransactionResponse;
@@ -152,15 +152,15 @@ public class DataServiceImpl implements DataService {
             throw new WalletTransactionException("Invalid Transaction Reference");
         }
 
-        QueryDataTransactionResponseDto queryDataTransactionResponseDto = new QueryDataTransactionResponseDto();
-       queryDataTransactionResponseDto.setRequest_id(request_id);
+        QueryDataTransactionDto queryDataTransactionDto = new QueryDataTransactionDto();
+       queryDataTransactionDto.setRequest_id(request_id);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("api-key", API_KEY);
         headers.set("secret-key", SECRETE_KEY);
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<QueryDataTransactionResponseDto> entity = new HttpEntity<>(queryDataTransactionResponseDto, headers);
+        HttpEntity<QueryDataTransactionDto> entity = new HttpEntity<>(queryDataTransactionDto, headers);
 
         RestTemplate restTemplate = new RestTemplate();
         LOGGER.info("Calling vtpass with entity: {}", entity);

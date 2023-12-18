@@ -23,6 +23,8 @@ public class VTPassUtils {
     public static final String CONFIRM_DATA ="https://sandbox.vtpass.com/api/requery";
     public static final String VERIFY_METER_NUMBER = "https://sandbox.vtpass.com/api/merchant-verify";
     public final static String BUY_ELECTRICITY = "https://sandbox.vtpass.com/api/pay";
+    public final static String QUERY_ELECTRICITY_TRANSACTION  = "https://sandbox.vtpass.com/api/requery";
+
 
 
     public final static String GET_VARIATION_CODES = "https://sandbox.vtpass.com/api/service-variations?serviceID=";

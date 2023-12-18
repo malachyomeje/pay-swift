@@ -159,7 +159,9 @@ public class PayStackImp implements PayStackService {
                 bank.setAmount(bank.getAmount()+transaction1.getAmount());
             }
 
+        }else{
             LOGGER.error("Failed to verify payment");
+
         }
 
         return response.getBody();
