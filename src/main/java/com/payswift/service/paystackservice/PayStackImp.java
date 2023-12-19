@@ -3,6 +3,7 @@ package com.payswift.service.paystackservice;
 import com.payswift.dtos.externalapiDtos.request.PayStackRequestDto;
 import com.payswift.dtos.externalapiDtos.response.PayStackResponse;
 import com.payswift.dtos.externalapiDtos.response.VerifyTransactionResponse;
+import com.payswift.enums.Description;
 import com.payswift.enums.TransactionType;
 import com.payswift.exceptions.UserNotFoundException;
 import com.payswift.exceptions.WalletTransactionException;
@@ -69,9 +70,9 @@ public class PayStackImp implements PayStackService {
         payStackRequestDto.setCallback_url("www.google.com");
 
         if (transactionType.equalsIgnoreCase("make_payment")) {
-            payStackRequestDto.setTransactionType(TransactionType.MAKE_PAYMENT.getTransaction());
+            payStackRequestDto.setTransactionType(Description.MAKE_PAYMENT.getTransaction());
        } else {
-           payStackRequestDto.setTransactionType(TransactionType.FUND_WALLET.getTransaction());
+           payStackRequestDto.setTransactionType(Description.FUND_WALLET.getTransaction());
         }
 
         LOGGER.info("creating pay_stack_dto{} ", payStackRequestDto);
@@ -94,7 +95,8 @@ public class PayStackImp implements PayStackService {
 
                     .name(users1.getFirstName() + " " + users1.getLastName())
                     .wallet(userWallet)
-                    .transactionType(TransactionType.MAKE_PAYMENT)
+                    .description(Description.MAKE_PAYMENT)
+                    .transactionType(TransactionType.CREDIT_ALERT)
                     .transactionStatus(PENDING)
                     .amount(amount+users1.getUserWallet().getAccountBalance())
                     .transactionReference(payStackRequestDto.getReference())
