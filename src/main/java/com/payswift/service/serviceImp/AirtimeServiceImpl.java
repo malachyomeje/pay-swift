@@ -5,8 +5,9 @@ import com.payswift.dtos.request.EmailDto;
 import com.payswift.dtos.request.QueryAirtimeTransactionDto;
 import com.payswift.dtos.response.BuyAirtimeResponse;
 import com.payswift.dtos.response.QueryAirtimeTransactionResponse;
-import com.payswift.service.AirtimeService;
 import com.payswift.enums.TransactionType;
+import com.payswift.service.AirtimeService;
+import com.payswift.enums.Description;
 import com.payswift.exceptions.UserNotFoundException;
 import com.payswift.exceptions.WalletTransactionException;
 import com.payswift.model.Transaction;
@@ -92,8 +93,9 @@ public class AirtimeServiceImpl implements AirtimeService {
         Transaction walletTransaction = Transaction.builder()
                 .name(users1.getFirstName() + " " + users1.getLastName())
                 .wallet(userWallet)
-                .transactionType(TransactionType.BUY_AIRTIME)
+                .description(Description.BUY_AIRTIME)
                 .transactionStatus(PENDING)
+                .transactionType(TransactionType.DEBIT_ALERT)
                 .amount(buyAirtimeDto.getAmount())
                 .transactionReference(buyAirtimeDto.getRequest_id())
                 .build();

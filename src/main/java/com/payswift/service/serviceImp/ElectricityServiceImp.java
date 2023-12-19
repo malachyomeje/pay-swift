@@ -7,6 +7,7 @@ import com.payswift.dtos.request.VerifyMeterNumberDto;
 import com.payswift.dtos.response.BuyElectricityResponse;
 import com.payswift.dtos.response.QueryElectricityTransactionResponse;
 import com.payswift.dtos.response.VerifyMeterNumberResponse;
+import com.payswift.enums.Description;
 import com.payswift.enums.TransactionType;
 import com.payswift.exceptions.UserNotFoundException;
 import com.payswift.exceptions.WalletTransactionException;
@@ -121,7 +122,8 @@ public class ElectricityServiceImp implements ElectricityService {
         Transaction walletTransaction = Transaction.builder()
                 .name(users.getFirstName() + " " + users.getLastName())
                 .wallet(userWallet)
-                .transactionType(TransactionType.BUY_ELECTRICITY)
+                .description(Description.BUY_ELECTRICITY)
+                .transactionType(TransactionType.DEBIT_ALERT)
                 .transactionStatus(PENDING)
                 .amount(Double.valueOf(buyElectricityDto.getAmount()))
                 .transactionReference(buyElectricityDto1.getRequest_id())

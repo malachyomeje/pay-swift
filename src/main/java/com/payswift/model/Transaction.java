@@ -2,6 +2,7 @@ package com.payswift.model;
 
 
 import com.payswift.enums.TransactionStatus;
+import com.payswift.enums.Description;
 import com.payswift.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,8 @@ public class Transaction {
     private String name;
     private String transactionReference;
     private String recipient;
+    @Enumerated(EnumType.STRING)
+    private Description description;
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
     @Enumerated(EnumType.STRING)

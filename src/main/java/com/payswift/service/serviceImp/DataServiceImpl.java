@@ -7,6 +7,7 @@ import com.payswift.dtos.request.QueryDataTransactionDto;
 import com.payswift.dtos.response.BuyDataResponse;
 import com.payswift.dtos.response.BuyDataVariationCodeResponse;
 import com.payswift.dtos.response.QueryDataTransactionResponse;
+import com.payswift.enums.Description;
 import com.payswift.enums.TransactionType;
 import com.payswift.exceptions.UserNotFoundException;
 import com.payswift.exceptions.WalletTransactionException;
@@ -120,7 +121,8 @@ public class DataServiceImpl implements DataService {
         Transaction walletTransaction = Transaction.builder()
                 .name(users1.getFirstName() + " " + users1.getLastName())
                 .wallet(userWallet)
-                .transactionType(TransactionType.BUY_DATA)
+                .description(Description.BUY_DATA)
+                .transactionType(TransactionType.DEBIT_ALERT)
                 .transactionStatus(PENDING)
                 .amount(buyDataDto1.getAmount())
                 .transactionReference(buyDataDto1.getRequest_id())
